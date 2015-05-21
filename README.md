@@ -18,3 +18,5 @@ Various tweaks for Witcher 3
 *  `testpause()`
 *  `testunpause()`
 *  `likeaboss()`
+*  `spawnenemy()`
+*  and many more...
