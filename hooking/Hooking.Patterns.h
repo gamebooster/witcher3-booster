@@ -9,6 +9,8 @@
 
 #include "Hooking.h"
 
+#include <sstream>
+
 namespace hook
 {
 	class pattern_match
@@ -71,7 +73,11 @@ namespace hook
 				EnsureMatches(expected);
 			}
 
-			assert(m_matches.size() == expected);
+			if (m_matches.size() != expected) {
+				std::stringstream message;
+				message << m_matches.size() << " != " << expected << " " << m_bytes;
+				MessageBoxA(NULL, message.str().c_str(), "MatchesCountError", MB_OK | MB_ICONEXCLAMATION);
+			};
 
 			return *this;
 		}

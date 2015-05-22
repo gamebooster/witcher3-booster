@@ -16,39 +16,18 @@
 namespace hook
 {
 // for link /DYNAMICBASE executables
-static ptrdiff_t baseAddressDifference;
+extern uintptr_t baseAddress;
 
 // sets the base address difference based on an obtained pointer
 inline void set_base(uintptr_t address)
 {
-#ifdef _M_IX86
-	uintptr_t addressDiff = (address - 0x400000);
-#elif defined(_M_AMD64)
-	uintptr_t addressDiff = (address - 0x140000000);
-#endif
-
-	// pointer-style cast to ensure unsigned overflow ends up copied directly into a signed value
-	baseAddressDifference = *(ptrdiff_t*)&addressDiff;
+	baseAddress = address;
 }
 
 // sets the base to the process main base
 inline void set_base()
 {
 	set_base((uintptr_t)GetModuleHandle(NULL));
-}
-
-// adjusts the address passed to the base as set above
-template<typename T>
-inline void adjust_base(T& address)
-{
-	*(uintptr_t*)&address += baseAddressDifference;
-}
-
-// returns the adjusted address to the stated base
-template<typename T>
-inline uintptr_t get_adjusted(T address)
-{
-	return (uintptr_t)address + baseAddressDifference;
 }
 
 struct pass
@@ -134,9 +113,9 @@ template<typename T>
 inline T* getRVA(uintptr_t rva)
 {
 #ifdef _M_IX86
-	return (T*)(baseAddressDifference + 0x400000 + rva);
+	return (T*)(baseAddress + rva);
 #elif defined(_M_AMD64)
-	return (T*)(0x140000000 + rva);
+	return (T*)(baseAddress + rva);
 #endif
 }
 
@@ -177,9 +156,9 @@ template<typename T, typename TOrdinal>
 void iat(const char* moduleName, T function, TOrdinal ordinal)
 {
 #ifdef _M_IX86
-	IMAGE_DOS_HEADER* imageHeader = (IMAGE_DOS_HEADER*)(baseAddressDifference + 0x400000);
+	IMAGE_DOS_HEADER* imageHeader = (IMAGE_DOS_HEADER*)(baseAddress);
 #elif defined(_M_AMD64)
-	IMAGE_DOS_HEADER* imageHeader = (IMAGE_DOS_HEADER*)(baseAddressDifference + 0x140000000);
+	IMAGE_DOS_HEADER* imageHeader = (IMAGE_DOS_HEADER*)(baseAddress);
 #endif
 	IMAGE_NT_HEADERS* ntHeader = getRVA<IMAGE_NT_HEADERS>(imageHeader->e_lfanew);
 

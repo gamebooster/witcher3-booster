@@ -15,6 +15,8 @@ bool OnViewportInputDebugAlwaysHook(void* thisptr, void* viewport, int input_key
 }
 
 DWORD WINAPI InitializeHook(void* arguments) {
+	hook::set_base();
+
 	char* location = hook::pattern("48 8B 05 ? ? ? ? 48 8D 4C 24 ? C6 44 24").count(1).get(0).get<char>(3);
 	void* global_game = *reinterpret_cast<void**>(location + *(int32_t*)location + 4);
 

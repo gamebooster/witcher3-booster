@@ -9,6 +9,9 @@
 
 namespace hook
 {
+
+	uintptr_t baseAddress;
+
 #ifndef _M_AMD64
 	void inject_hook::inject()
 	{
