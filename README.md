@@ -8,6 +8,7 @@ Various tweaks for Witcher 3
 
 With the help by multiple people from this thread: http://forums.nexusmods.com/index.php?showtopic=2885919
 
+* `replaceplayer('Ciri')` - play with Ciri
 * `addmoney(11)`
 * `removemoney(11)`
 * `additem('gwint_card_eredin_gold', 1)`
