@@ -80,6 +80,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>E:\The Witcher 3 Wild Hunt\bin\x64\plugins\</OutDir>
+    <TargetName>debug-console-enabler</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -143,7 +145,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <OutputFile>E:\The Witcher 3 Wild Hunt\bin\x64\plugins\debug-console-enabler.dll</OutputFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
