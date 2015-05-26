@@ -1,3 +1,137 @@
+SetGeraltLevel 4098
+ Int32 level 128
+ EGeraltPath path 128
+DestroyEntity 4098
+ CName entityTag 128
+SetSkating 4098
+DEBUG_E3_DEMO_SETUP 4098
+DisplayPortalConfirmationPopup 4162
+ Bool pauseGame 128
+PlayerModeQuest 4098
+ EPlayerMode playerMode 128
+ Bool toggle 128
+ CName snapToNavMeshSourceName 128
+ Bool snapToNavMeshEnable 128
+AddAndEquipItemsRandomlyQuest 4098
+ CName actorsTag 128
+ array:2,0,SItem itemsNames 128
+AddAndEquipItemsRandomlyQuestExt 4098
+ CName actorsTag 128
+ array:2,0,SItemExt itemsNames 128
+HACK_MinimapWerewolf 4098
+EnterJumpToWaterArea 4098
+ Bool requireDirection 1152
+ Vector direction 1152
+ Bool requireSprint 1152
+ExitJumpToWaterArea 4098
+AddQuestMappinToNoticeboard 4098
+ CName noticeboardTag 128
+ CName entityTag 128
+ AQMTN_EntityType entityType 128
+EnableStaticMappin 4098
+ CName tag 128
+ Bool enable 128
+ Bool isFastTravelPoint 128
+SetSimulatedCloth 4098
+ handle:CEntity e 128
+ Bool enable 128
+DestroyByTag 4098
+ CName tag 128
+ManageRootsEntrance 4098
+ CName tag 128
+ Bool shouldOpen 128
+MakePhilippaShootAtNode 4098
+ CName philippaTag 128
+ CName nodeTag 128
+DespawnMagicBubble 4098
+ CName magicBubbleOwnerTag 128
+ScaleMagicBubble 4098
+ CName magicBubbleTag 128
+ Vector desiredScale 128
+ Float scaleDuration 128
+SwitchAttachment 4098
+ Bool attach 128
+ CName parentEntityTag 128
+ CName childEntityTag 128
+ CName attachSlot 128
+ Bool switchGravity 128
+SwitchCapsuleCollision 4098
+ CName actorTag 128
+ Bool enable 128
+ Bool switchVulnerability 128
+ CName effectLinkedToCollision 128
+PlayerSelectQuickslotItem 4098
+ CName itemName 128
+ Bool useSign 128
+ ESignType sign 128
+EquipAmmoOnCrossbow 4098
+ CName ammoName 128
+EnableShopkeeperCraftingQuest 4098
+ CName npcTag 128
+ Bool enable 128
+IgniteFlammableArea 4098
+ CName tag 128
+EnableTalkInteractionInCombatByTag 4098
+ CName npcTag 128
+ Bool enable 128
+AddGwentCards 4098
+ EGwentCardFaction val 128
+ManageBuffImmunities 4098
+ CName npcTag 128
+ array:2,0,EEffectType effects 128
+ Bool remove 128
+UseRiddleNodeQuest 4098
+ CName riddleNodeTag 128
+EnableRigidMeshQuest 4098
+ CName entityTag 128
+ Bool enable 128
+PadVibrationEnable 4098
+ Bool enable 128
+TriggerSonarFXQuest 4098
+ CName sonarEntityTag 128
+EnableFXManager 4098
+ CName fxManagerTag 128
+ Bool enable 128
+PlayVoicesetQuest 4098
+ CName tag 128
+ String voiceSet 128
+Achievement_FinishedGame 4098
+SpawnAndAttachEntity 4098
+ handle:CEntityTemplate entTemplate 128
+ CName attachToEntityTag 128
+ CName attachSlot 128
+DisableHorseSlowdownTriggers 4098
+ Bool HorseCanAlwaysGallop 128
+SetHorseRacingMode 4098
+ Bool value 128
+SetArachasEggDestoryedCustomQuest 4098
+ CName EggsTag 128
+ Bool dontAddFact 128
+SetCreaturesGroupState 4098
+ CName encounterTag 128
+ array:2,0,CName creaturesGroups 128
+ CName sourceName 128
+ Bool enable 128
+ Bool setDelayManually 128
+ GameTimeWrapper delay 128
+ActivateBoatRacingGate 4098
+ CName tag 128
+ForceInteractSwitch 4098
+ CName tag 128
+ Bool on 128
+ PhysicalSwitchAnimationType switchType 128
+ManageGate 4098
+ CName tag 128
+ Bool open 128
+ Float speedModifier 128
+LaunchGwint 4098
+QuestItemDisable 4098
+ CName itemName 128
+ Bool addQuestTag 128
+TeleportPlayerWithPortalFx 4098
+ CName targetTag 128
+UnlockGwentDeck 4098
+ EGwentDeckUnlock val 128
 SetHorsePanicMult 4098
  CName horseTag 128
  Float mult 128
@@ -360,12 +494,10 @@ ArrayOfIdsAppend 2
 ArrayOfIdsAppendUnique 2
  array:2,0,SItemUniqueId first 640
  array:2,0,SItemUniqueId second 128
-ArrayOfGameplayEntitiesAppendArrayOfActorsUnique 2
- array:2,0,handle:CGameplayEntity first 640
- array:2,0,handle:CActor second 128
-ArrayOfGameplayEntitiesAppendUnique 2
- array:2,0,handle:CGameplayEntity first 640
- array:2,0,handle:CGameplayEntity second 128
+EnableNewGamePlus 4098
+ Bool enable 128
+StartNewGamePlus 258
+ String filename 128
 ArrayOfNamesCount 2
  array:2,0,CName arr 128
  CName item 128
@@ -448,10 +580,16 @@ InterpTo_F 2
  Float desired 128
  Float deltaTime 128
  Float interpSpeed 128
-EnableNewGamePlus 4098
- Bool enable 128
-StartNewGamePlus 258
- String filename 128
+InterpConstTo_F 2
+ Float current 128
+ Float desired 128
+ Float deltaTime 128
+ Float interpSpeed 128
+InterpEaseIn_F 2
+ Float a 128
+ Float b 128
+ Float alpha 128
+ Float exp 128
 InterpEaseOut_F 2
  Float a 128
  Float b 128
@@ -858,7 +996,9 @@ IsReleased 2
  Bool justValue 1152
 toggleqt 258
 togglejdbg 258
-showQuestGroups 258
+SetFinalboardQuest 2050
+ handle:CStoryScenePlayer player 128
+ Bool isFinalboard 128
 showLoadingScreenVideo 258
  Bool show 128
 testMonsterFind 258
@@ -942,9 +1082,8 @@ GetHTMLForItemICO 2
  String icon 128
 GetBookTexture 2
  String tag 128
-SetFinalboardQuest 2050
- handle:CStoryScenePlayer player 128
- Bool isFinalboard 128
+GetIconForTag 2
+ String tag 128
 GetIconOrColorForTag2 2
  String tag 128
 GetIconOrColorForTag3 2
@@ -1038,8 +1177,10 @@ FDOFF 258
 FON 258
 FOFF 258
 FMON 258
-FMOFF 258
-fhint 258
+BehGraphIntToName 2
+ Int32 graphEnum 128
+DoStorySceneGameplayAction 2
+ SStorySceneGameplayActionCallbackInfo callbackInfo 640
 med 258
  Bool val 128
 addSkillPoints 258
@@ -1106,10 +1247,9 @@ addbolts 258
  Bool infinite 1152
 addcraft 258
 addsteelswords 258
-BehGraphIntToName 2
- Int32 graphEnum 128
-DoStorySceneGameplayAction 2
- SStorySceneGameplayActionCallbackInfo callbackInfo 640
+addsteelswords2 258
+addwolfdlc 258
+ Bool dontOpenInv 1152
 addsilverswords 258
  Bool dontOpenInv 1152
 addsilverswords2 258
@@ -1121,6 +1261,7 @@ addboots 258
 addgloves 258
 addsets 258
 addbooks 258
+addbooks_ 2
 addlore 258
 addlore2 258
 addfood 258
@@ -1150,7 +1291,8 @@ addcraftedboots 258
 addschematicsboots 258
 addschematicspants 258
 addschematicsgloves 258
-addschematicsarmor 258
+EnableFastTravelling 4098
+ Bool enable 128
 addschematicscomponents 258
 addschematicsupgrades 258
 addschematicsbolts 258
@@ -1179,18 +1321,30 @@ addjunk2 258
 addquestitems1 258
 fff 258
  Float x 128
-addquestitems2 258
-addquestitems3 258
-addtreasurehuntitems 258
+EnableShopkeeper 4098
+ CName tag 128
+ Bool enable 128
+EnableMapPath 4098
+ CName tag 128
+ Bool enable 128
+ Float lineWidth 128
+ Float segmentLength 128
+ Color color 128
+EnableDynamicMappin 4098
+ CName tag 128
+ Bool enable 1152
+ EDM_MappinType type 1152
+ Bool informUI 1152
 addcharacterdecorations 258
 recycle 258
-EnableFastTravelling 4098
- Bool enable 128
+printinv 258
+ Bool onlyEquipped 1152
 printinv2 258
 printinv2item 258
  Int32 index 128
-dressmeup 258
- Int32 i 128
+SuppressReactions 258
+ Bool toggle 128
+ CName areaTag 128
 undressme 258
  Int32 i 128
 healme 258
@@ -1234,20 +1388,9 @@ useoil 258
  CName n 128
  Int32 type 1152
 oilstats 258
-EnableShopkeeper 4098
- CName tag 128
- Bool enable 128
-EnableMapPath 4098
- CName tag 128
- Bool enable 128
- Float lineWidth 128
- Float segmentLength 128
- Color color 128
-EnableDynamicMappin 4098
- CName tag 128
- Bool enable 1152
- EDM_MappinType type 1152
- Bool informUI 1152
+oilstatsciri 258
+testoil 258
+testoilciri 258
 playerkill 258
  Bool ignoreImmortalityMode 1152
 PlayerKinematic 258
@@ -1281,9 +1424,7 @@ god 258
 god2 258
 god3 258
 eatapple 258
-SuppressReactions 258
- Bool toggle 128
- CName areaTag 128
+gametestdummy 258
 spamplayerspeed 258
  Bool enable 1152
 learnskill 258
@@ -1396,11 +1537,13 @@ RunGossip 258
 debugtp 258
 omnom 258
  Int32 level 1152
-stagger 258
- CName tag 128
+ReadBookByName 4098
+ CName bookName 128
+ Bool unread 128
 printstate 258
 SetEasy 258
-SetMedium 258
+faction 258
+ Int32 i 128
 SetHard 258
 SetHardcore 258
 difflevel 258
@@ -1454,14 +1597,11 @@ MoveAlongPath 258
  Float speed 128
  CName pathTag 128
  CName actorTag 1152
-ReadBookByName 4098
- CName bookName 128
- Bool unread 128
+nopolice 258
 testdrownerswimming 258
  CName actorTag 1152
 dismantle 258
-faction 258
- Int32 i 128
+Skate 258
 AltCombatCamera 258
  Bool b 128
 tuthack 258
@@ -1469,8 +1609,8 @@ togglemenus 258
 toggleinput 258
 interiorcam 258
  Bool b 128
-slow 258
- Float factor 128
+LogStates 2
+ String str 128
 shakeoffgeralt 258
 immunity 258
  CName effectName 128
@@ -1527,8 +1667,7 @@ MovePlayerFwd 258
  Float speed 128
  Bool drawSteel 1152
  Bool drawSilver 1152
-LogStates 2
- String str 128
+followNPC 258
 magicBubble 258
  Bool toggle 128
  CName actorTag 1152
@@ -1601,6 +1740,9 @@ changeStyle 258
 addHair1 258
 addHair2 258
 addHair3 258
+addHairDLC1 258
+addHairDLC2 258
+addHairDLC3 258
 addLightArmors 258
 addMediumArmors 258
 addHeavyArmors 258
@@ -1744,7 +1886,11 @@ gwentTournamentCards 258
 horsePanic 258
 showMouse 258
  Bool value 128
+primarec 258
+primabooks 258
 testMessage 258
+printtags 258
+ CName actorTag 128
 testLoc 258
  String key 128
 testRescale 258
@@ -1878,58 +2024,6 @@ PlayItemEquipSound 2
  CName itemCategory 128
 PlayItemUnequipSound 2
  CName itemCategory 128
-PlayItemConsumeSound 2
- SItemUniqueId item 128
-IsExplorationOneSided 2
- SExplorationQueryToken exploration 128
-LogExploration 2
- String _TextS 128
-LogExplorationError 2
- String _TextS 128
-LogExplorationWarning 2
- String _TextS 128
-LogExplorationToken 2
- String text 128
-InitExplorationLogs 2
-LogExplorationClimb 2
- String text 128
-LogSlidingTerrain 2
- String text 128
-LogCollisionTrajectory 2
- String text 128
-PlayCamAnim 258
- Int32 i 1152
-LinkStringToType 2
- String str 128
-SkillPathNameToType 2
- CName n 128
-SkillPathTypeToName 2
- ESkillPath s 128
-SkillPathTypeToLocalisationKey 2
- ESkillPath s 128
-SkillSubPathToLocalisationKey 2
- ESkillSubPath s 128
-SkillSubPathNameToType 2
- CName n 128
-SkillSubPathTypeToName 2
- ESkillSubPath s 128
-IsSkillSign 2
- ESkill skill 128
-dbgskillslots 258
-getAlchemyRecipeFromName 2
- CName recipeName 128
-OpenWorldMap 2114
- handle:CStoryScenePlayer player 128
-AlchemyCookedItemTypeStringToEnum 2
- String nam 128
-AlchemyCookedItemTypeEnumToName 2
- EAlchemyCookedItemType type 128
-AlchemyCookedItemTypeToLocKey 2
- EAlchemyCookedItemType type 128
-AlchemyExceptionToString 2
- EAlchemyExceptions result 128
-IsAlchemyRecipe 2
- CName recipeName 128
 ApplyAppearance 4098
  CName entitiesTag 128
  CName appearanceName 128
@@ -2365,7 +2459,8 @@ SetActionMatchToTarget_StaticPoint 11
  Float yaw 128
  Bool position 128
  Bool rotation 128
-OpenDebugWindows 3
+appearance 258
+ CName app 128
 LogChannel 11
  CName channel 128
  String text 128
@@ -2399,8 +2494,8 @@ GameTimeHours 11
  GameTime time 128
 GameTimeDays 11
  GameTime time 128
-appearance 258
- CName app 128
+GameTimeToString 11
+ GameTime time 128
 GameTimeToSeconds 11
  GameTime time 128
 GameTimeCreate 11
@@ -2660,9 +2755,9 @@ t_Trans 11
 t_RotQuat 11
  EngineQsTransform a 128
  Vector quat 128
-t_Scale 11
- EngineQsTransform a 128
- Vector scale 128
+attitude 258
+ CName tag 128
+ Bool flag 128
 t_SetTrans 11
  EngineQsTransform a 128
  Vector move 128
@@ -2705,9 +2800,7 @@ t_BlendNormalize 11
  Float w 128
 t_IsOk 11
  EngineQsTransform a 128
-attitude 258
- CName tag 128
- Bool flag 128
+q_SetIdentity 11
 q_Identity 11
  Vector a 128
 q_SetInv 11
@@ -2790,3 +2883,1271 @@ EnablePCMode 258
  Bool flag 128
 HideHorse 258
 KillHorse 258
+PerformCounter 258
+ Bool flag 128
+Ragdoll 258
+ CName tag 128
+OpenRift 258
+ CName tag 128
+CloseRift 258
+ CName tag 128
+SetTattoo 2050
+ handle:CStoryScenePlayer player 128
+ Bool hasTattoo 128
+EnableSnapToNavMesh 258
+ CName source 128
+ Bool enable 128
+SetCustomHead 2050
+ handle:CStoryScenePlayer player 128
+ CName head 128
+ Bool barberSystem 128
+RemoveCustomHead 2050
+ handle:CStoryScenePlayer player 128
+ Bool barberSystem 128
+StatNameToEnum 2
+ CName n 128
+StatEnumToName 2
+ EBaseCharacterStats s 128
+ResistStatPointNameToEnum 2
+ CName n 128
+ResistStatPointEnumToName 2
+ ECharacterDefenseStats s 128
+ResistStatPercentNameToEnum 2
+ CName n 128
+ResistStatPercentEnumToName 2
+ ECharacterDefenseStats s 128
+DisplayHudMessage 4098
+ CName localisedStringKey 128
+ Int32 localizedStringID 128
+DisplayRaceStart 4162
+ Int32 countDownSecondsNumber 128
+PlayItemConsumeSound 2
+ SItemUniqueId item 128
+IsExplorationOneSided 2
+ SExplorationQueryToken exploration 128
+LogExploration 2
+ String _TextS 128
+LogExplorationError 2
+ String _TextS 128
+LogExplorationWarning 2
+ String _TextS 128
+LogExplorationToken 2
+ String text 128
+InitExplorationLogs 2
+LogExplorationClimb 2
+ String text 128
+LogSlidingTerrain 2
+ String text 128
+LogCollisionTrajectory 2
+ String text 128
+PlayCamAnim 258
+ Int32 i 1152
+LinkStringToType 2
+ String str 128
+OpenWorldMap 2114
+ handle:CStoryScenePlayer player 128
+SkillPathNameToType 2
+ CName n 128
+SkillPathTypeToName 2
+ ESkillPath s 128
+SkillPathTypeToLocalisationKey 2
+ ESkillPath s 128
+SkillSubPathToLocalisationKey 2
+ ESkillSubPath s 128
+SkillSubPathNameToType 2
+ CName n 128
+SkillSubPathTypeToName 2
+ ESkillSubPath s 128
+IsSkillSign 2
+ ESkill skill 128
+dbgskillslots 258
+getAlchemyRecipeFromName 2
+ CName recipeName 128
+AlchemyCookedItemTypeStringToEnum 2
+ String nam 128
+AlchemyCookedItemTypeEnumToName 2
+ EAlchemyCookedItemType type 128
+AlchemyCookedItemTypeToLocKey 2
+ EAlchemyCookedItemType type 128
+AlchemyExceptionToString 2
+ EAlchemyExceptions result 128
+IsAlchemyRecipe 2
+ CName recipeName 128
+ToggleAll 258
+ Bool toggle 128
+DumpCommunityAgents 258
+getCraftingSchematicFromName 2
+ CName schematicName 128
+CraftingExceptionToString 2
+ ECraftingException result 128
+ParseCraftsmanTypeStringToEnum 2
+ String s 128
+ParseCraftsmanLevelStringToEnum 2
+ String s 128
+CraftsmanTypeToLocalizationKey 2
+ ECraftsmanType type 128
+CraftsmanLevelToLocalizationKey 2
+ ECraftsmanLevel type 128
+IsCraftingSchematic 2
+ CName recipeName 128
+ForceDismember 258
+ Bool b 128
+ Int32 chance 1152
+ CName n 1152
+ Bool e 1152
+ForceFinisher 258
+ Bool b 128
+ CName n 1152
+ Bool rightStance 1152
+DamageHitsEssence 2
+ CName damageName 128
+DamageHitsVitality 2
+ CName damageName 128
+DamageHitsMorale 2
+ CName damageName 128
+DamageHitsStamina 2
+ CName damageName 128
+GetBasicAttackDamageAttributeName 2
+ CName attackType 128
+ CName damageName 128
+IsDamageTypeNameValid 2
+ CName damageName 128
+DamageTypeStringToName 2
+ String damageStr 128
+GetResistForDamage 2
+ CName damageName 128
+ Bool isDoTDamage 128
+GetMinorShrineBuffs 2
+ModifyHitSeverityBuff 2
+ handle:CActor target 128
+ EEffectType type 128
+IsKnockdownEffectType 2
+ EEffectType type 128
+IsCriticalEffectType 2
+ EEffectType type 128
+IsNegativeEffectType 2
+ EEffectType type 128
+GetBuffCriticalType 2
+ handle:CBaseGameplayEffect buff 128
+CriticalBuffIsDestroyedOnInterrupt 2
+ handle:CBaseGameplayEffect buff 128
+CriticalBuffIsHitAllowed 2
+ handle:CBaseGameplayEffect buff 128
+ EHitReactionType hit 128
+IsCriticalEffect 2
+ handle:CBaseGameplayEffect e 128
+IsDoTEffect 2
+ handle:CBaseGameplayEffect e 128
+CriticalEffectCanPlayAnimation 2
+ handle:CBaseGameplayEffect buff 128
+CriticalBuffDisallowPlayAnimation 2
+ handle:CBaseGameplayEffect buff 128
+CriticalBuffUsesFullBodyAnim 2
+ handle:CBaseGameplayEffect buff 128
+EffectNameToType 2
+ CName effectName 128
+ EEffectType type 640
+ CName abilityName 640
+HACK_NO_MEMORY_TO_COMPILE_EffectNameToType_Part1 2
+ CName effectName 128
+ EEffectType type 640
+ CName abilityName 640
+HACK_NO_MEMORY_TO_COMPILE_EffectNameToType_Part2 2
+ CName effectName 128
+ EEffectType type 640
+ CName abilityName 640
+EffectTypeToName 2
+ EEffectType effectType 128
+IsBuffAutoBuff 2
+ EEffectType effectType 128
+IsBuffShrine 2
+ EEffectType effectType 128
+EnablePlayerModeTrigger 4098
+ CName triggerTag 128
+ Bool enable 128
+CheckNestDestructionAchievement 2
+ Bool debugLog 1152
+ProcessVelen 2
+ array:2,0,SEntityMapPinInfo entityMapPins 640
+testpest 258
+GetLocNameFromEquipSlot 2
+ EEquipmentSlots slotType 128
+IsMultipleSlot 2
+ EEquipmentSlots slot 128
+GetInvalidUniqueId 2
+GetFilterTypeName 2
+ EInventoryFilterType filterType 128
+GetFilterTypeByName 2
+ CName filterName 128
+GetSlotForItem 2
+ CName category 128
+ array:2,0,CName tags 128
+ Bool isPlayer 128
+GetSlotForItemByCategory 2
+ CName category 128
+IsSlotSkillMutagen 2
+ EEquipmentSlots slot 128
+IsSlotPotionMutagen 2
+ EEquipmentSlots slot 128
+IsSlotQuickslot 2
+ EEquipmentSlots slot 128
+IsSlotMutagen 2
+ EEquipmentSlots slot 128
+IsSlotPotionslot 2
+ EEquipmentSlots slot 128
+IsSlotPetardslot 2
+ EEquipmentSlots slot 128
+GetItemActionFriendlyName 2
+ EInventoryActionType itemAction 128
+ Bool isEquipped 1152
+IsBookTextureTag 2
+ String tag 128
+GetSwitchByTag 2
+ CName tag 128
+GetPlayerReputationManager 2
+reptest 258
+ Int32 i 128
+reputationpoints 258
+ Int32 i 128
+addreppoints 258
+ Int32 i 128
+ Int32 points 128
+resetnegativepoints 258
+ Int32 i 128
+bonusvalue 258
+ Int32 i 128
+HideLayer 258
+ String layerName 128
+FlyingSwarm_RequestGroupStateChange 2
+ CName lairTag 128
+ CName groupState 128
+ Bool affectAllGroups 128
+FlyingSwarm_RequestCreateGroup 2
+ CName lairTag 128
+ Int32 boidCount 128
+ CName spawnPOI 128
+FlyingSwarm_RequestAllGroupsInstantDespawn 2
+ CName lairTag 128
+Swarm_DisablePOIs 2
+ CName poiTag 128
+ Bool disable 128
+Swarm_DisableLair 2
+ CName lairTag 128
+ Bool disable 128
+TutorialLevelUp 2
+mainmenu 258
+GetObjectFromArrayWithLabel 2
+ handle:CScriptedFlashArray csArray 128
+ String variableName 128
+ String labelName 128
+ handle:CScriptedFlashObject matchingObject 640
+exePopup 258
+ExtractStringFromCSV 2
+ String str 128
+testBlockPrep 258
+ Bool block 128
+testBlockMap 258
+ Bool block 128
+testBlockInventory 258
+ Bool block 128
+testBlockJournal 258
+ Bool block 128
+testBlockCharacter 258
+ Bool block 128
+testBlockGlossary 258
+ Bool block 128
+testBlockAlchemy 258
+ Bool block 128
+testBlockMeditation 258
+ Bool block 128
+testBlockMeditateAction 258
+ Bool block 128
+testBlockDismount 258
+ Bool block 128
+showCrossbowTut 258
+GetBaseScreenPosition 2
+ Vector screenPos 640
+ handle:CEntity entity 128
+ handle:CInteractionComponent comp 1152
+ Float extraZ 1152
+ Bool noOppositeCamera 1152
+ Bool normalized 1152
+GetOppositeCameraScreenPos 2
+ Vector worldPos 128
+ Float x 640
+ Float y 640
+IsPointOnScreen 2
+ Vector screenPos 128
+ui_testmenu 258
+showoneliner1 258
+ String plainText 128
+hideoneliner1 258
+dlgshow 258
+dlghide 258
+hudinfo 258
+HudSetDynamic 258
+ Bool value 128
+HudSetModuleEnabled 258
+ String moduleName 128
+ Bool value 128
+ForceHudScaleRefresh 258
+testarea 258
+ String text 128
+testcrosshair 258
+ Bool value 128
+reduceidur 258
+ Float durability 128
+reduceidurslot 258
+ Int32 i 128
+ Float durability 128
+showdebugtext 258
+hidedebugtext 258
+contraHint 258
+ Bool set 128
+dodgeFeedback 258
+hardlock 258
+ Bool set 128
+yen1 258
+yen2 258
+eitem 258
+ Bool enable 128
+mm_zoom 258
+ Float zoom 128
+mm_mask 258
+ Bool enable 128
+mm_debug 258
+ Bool enable 128
+mm_borders 258
+ Bool enable 128
+mm_fade 258
+ Bool fadeOut 128
+ Bool immediately 128
+sayoneliner 258
+ String value 128
+ Int32 id 128
+sayoneliner2 258
+ CName tag 128
+ String value 128
+ Int32 id 128
+removeoneliner 258
+ Int32 id 128
+srfdes 258
+ Bool value 128
+ String fieldName 128
+esign 258
+ Bool enable 128
+hud_addsub 258
+ String speaker 128
+ String text 128
+hud_remsub 258
+hud_testwatermark 258
+ Bool show 128
+AlwaysDisplayHUD 258
+ Bool value 128
+TestAutosave 258
+ingamemenu 258
+crd 258
+casttest 258
+gammamenu 258
+recapmovies 258
+startupmovies 258
+IngameMenu_GetOptionTypeFromString 2
+ String optionType 128
+IngameMenu_FillOptionsSubMenuData 2
+ handle:CScriptedFlashValueStorage flashStorageUtility 128
+ Bool isMainMenu 128
+IngameMenu_FillArrayFromConfigGroup 2
+ handle:CScriptedFlashValueStorage flashStorageUtility 128
+ Int32 groupID 128
+ handle:CScriptedFlashArray rootFlashArray 128
+IngameMenu_FetchAndGenerateGroupMenuObject 2
+ handle:CScriptedFlashValueStorage flashStorageUtility 128
+ String displayNamePrefix 128
+ String groupDisplayName 128
+ handle:CScriptedFlashArray rootFlashArray 128
+ handle:CScriptedFlashArray optionParentArray 640
+IngameMenu_FillSubMenuOptionsList 2
+ handle:CScriptedFlashValueStorage flashStorageUtility 128
+ Int32 groupID 128
+ CName groupName 128
+ handle:CScriptedFlashObject groupRootObject 128
+IngameMenu_AddDifficultyOption 2
+ handle:CScriptedFlashValueStorage flashStorageUtility 128
+ handle:CScriptedFlashArray listToAddToo 128
+IngameMenu_ChangePresetValue 2
+ CName groupId 128
+ Int32 targetPresetIndex 128
+ handle:CR4IngameMenu parentMenu 128
+IngameMenu_GatherOptionUpdatedValues 2
+ CName groupId 128
+ handle:CScriptedFlashObject parentObject 128
+ handle:CScriptedFlashValueStorage flashStorageUtility 128
+IngameMenu_GatherKeybindData 2
+ handle:CScriptedFlashArray parentArray 128
+ handle:CScriptedFlashValueStorage flashStorageUtility 128
+IngameMenu_GetLocalizedKeybindName 2
+ CName keybindName 128
+IngameMenu_GetPCInputGroupIndex 2
+IngameMenu_GetKeybindTagWithKeybindKey 2
+ EInputKey newKeybindValue 128
+inGameMenu_LocalizeKeyString 2
+ String key 128
+inGameMenu_TryLocalize 2
+ String key 128
+IngameMenu_UpdateDLCScriptTags 2
+IngameMenu_PopulateSaveDataForSlotType 2
+ handle:CScriptedFlashValueStorage flashStorageUtility 128
+ Int32 saveType 128
+ handle:CScriptedFlashArray parentObject 128
+ Bool allowEmptySlot 128
+IngameMenu_PopulateImportSaveData 2
+ handle:CScriptedFlashValueStorage flashStorageUtility 128
+ handle:CScriptedFlashArray parentObject 128
+InGameMenu_CreateControllerData 2
+ handle:CScriptedFlashValueStorage flashStorageUtility 128
+InGameMenu_CreateControllerDataCiri 2
+ handle:CScriptedFlashValueStorage flashStorageUtility 128
+repairmenu 258
+testLockInHub 258
+ Bool locked 128
+testLockInMenu 258
+ Bool locked 128
+deathscreen 258
+testbes 258
+loadingmenu 258
+loadingmenuclose 258
+map_debug 258
+ Bool enable 128
+map_unlimitedzoom 258
+ Bool enable 128
+map_manuallod 258
+ Bool enable 128
+map_borders 258
+ Bool show 128
+innkeep 258
+postermenu 258
+TheBegining 258
+SetStartScreenPlatform 258
+ Int32 value 128
+testmenu 258
+testmenu_transform 258
+ Float x 128
+ Float y 128
+ Float z 128
+ Float scale 128
+uirescale 258
+r4glossaryencyclopedia 258
+AddCharacterHeader 2
+ String locKey 128
+ handle:CScriptedFlashArray toArray 128
+ handle:CScriptedFlashValueStorage flashMaster 128
+AddCharacterStat 2
+ String tag 128
+ CName varKey 128
+ String locKey 128
+ String iconTag 128
+ handle:CScriptedFlashArray toArray 128
+ handle:CScriptedFlashValueStorage flashMaster 128
+AddCharacterStatSigns 2
+ String tag 128
+ CName varKey 128
+ String locKey 128
+ String iconTag 128
+ handle:CScriptedFlashArray toArray 128
+ handle:CScriptedFlashValueStorage flashMaster 128
+AddCharacterStatF 2
+ String tag 128
+ CName varKey 128
+ String locKey 128
+ String iconTag 128
+ handle:CScriptedFlashArray toArray 128
+ handle:CScriptedFlashValueStorage flashMaster 128
+AddCharacterStatU 2
+ String tag 128
+ CName varKey 128
+ String locKey 128
+ String iconTag 128
+ handle:CScriptedFlashArray toArray 128
+ handle:CScriptedFlashValueStorage flashMaster 128
+AddCharacterStatU2 2
+ String tag 128
+ CName varKey 128
+ String locKey 128
+ String iconTag 128
+ handle:CScriptedFlashArray toArray 128
+ handle:CScriptedFlashValueStorage flashMaster 128
+CloseLootPopup 258
+closeoverlay 258
+test2popup 258
+test2popup2 258
+testpopup 258
+testpopup2 258
+GetItemRarityDescriptionFromInt 2
+ Int32 quality 128
+CalculateStatsComparance 2
+ array:2,0,SAttributeTooltip itemStats 128
+ array:2,0,SAttributeTooltip compareItemStats 128
+ handle:CScriptedFlashObject rootGFxObject 128
+ handle:CScriptedFlashArray compResult 640
+ Bool ignorePrimStat 1152
+ Bool dontCompare 1152
+ Bool extendedData 1152
+GetItemAttributeComparison 2
+ String attrName 128
+ Float attrValue 128
+ array:2,0,SAttributeTooltip equipedItemStats 128
+GetStatDiff 2
+ Float a 128
+ Float b 128
+IsFireSource 258
+ CName tag 128
+CalculateCriticalStateTypePriority 2
+ ECriticalStateType type 128
+BehGraphEnumToName 2
+ EBehaviorGraph graphEnum 128
+killall 258
+ Float range 1152
+RestoreStamina 258
+ Int32 val 1152
+staminaboy 258
+StaminaBoyInternal 2
+ Bool on 128
+staminapony 258
+StaminaPonyInternal 2
+ Bool on 128
+buffgeralt 258
+ CName buffName 128
+ Float duration 1152
+ String src 1152
+knockdown 258
+bufftarget 258
+ EEffectType type 128
+ Float duration 1152
+ CName src 1152
+HealGeralt 258
+addexp 258
+ Int32 amount 128
+setlevel 258
+ Int32 targetLvl 128
+levelup 258
+ Int32 times 1152
+addskillpoints 258
+ Int32 value 1152
+LogPlayerDev 258
+testsw 258
+ CName tag 128
+readbook 258
+ CName bookName 128
+bookread 258
+ CName bookName 128
+slog 258
+sgo 258
+ CName sname 128
+ Bool bforce 1152
+ Bool bkeep 1152
+spop 258
+ Bool ball 1152
+spush 258
+ CName sname 128
+CombatStage 258
+ CName npcTag 128
+ ENPCFightStage stage 128
+ChangeAp 258
+ CName npcTag 128
+ CName appearanceName 128
+tptonode 258
+ CName nodeName 128
+tptopos 258
+ Float x 128
+ Float y 128
+ Float z 128
+xy 258
+ Float x 128
+ Float y 128
+TrajectoryDebug 258
+ CName actorTag 128
+BoatTeleport 258
+ CName tag 128
+ Float offset 1152
+mountboat 258
+ Bool passenger 1152
+UseNativeTargeting 258
+ Bool use 128
+SkillNameToEnum 2
+ CName n 128
+SignEnumToSkillEnum 2
+ ESignType s 128
+SkillEnumToName 2
+ ESkill s 128
+SignNameToEnum 2
+ CName signName 128
+SignStringToEnum 2
+ String signString 128
+SignEnumToString 2
+ ESignType signType 128
+IsBufferActionAttackAction 2
+ EBufferActionType a 128
+IsActionCombat 2
+ EInputActionBlock action 128
+GetWitcherPlayer 2
+ttt 258
+hpitch 258
+ Float pitch 128
+LogSkating 2
+ String str 128
+BooksMinigameInit 2050
+ handle:CStoryScenePlayer player 128
+ CName minigameTag 128
+BooksMinigameSwitch 2050
+ handle:CStoryScenePlayer player 128
+ CName minigameTag 128
+ Int32 slotNumber 128
+ EBookDirection direction 128
+SetTimeScaleQuest 4098
+ Float timeScale 128
+LaunchCredits 4098
+MessageDialogPopup 4098
+ String locMessage 128
+RemoveItemAmmoQuest 4098
+ CName itemName 128
+ Int32 amount 128
+EnableGlossaryImageOverrideQuest 4098
+ CName uniqueEntryTag 128
+ String imageFileName 128
+ Bool enable 128
+MonsterHuntInvestigationAreaManager 4098
+ CName tag 128
+ Bool enable 128
+Q202GiantDisableHitAnim 4098
+ CName tag 128
+ Bool enable 128
+ApplyForce 4098
+ CName fromNode 128
+ CName toTag 128
+ Float force 128
+ Bool destroy 1152
+DisableHerbsOnMinimapQuest 4098
+ Bool disableHerbs 128
+SetMapPinStatus 4098
+ EMapPinStatus type 128
+ CName tag 128
+ Bool set 128
+SetupTrophySceneQuest 4162
+ CName monsterTag 128
+ Float offset 128
+ProcessMonsterHuntTrophyQuest 4162
+ CName trophyName 128
+ Bool dontTeleportHorse 128
+AlwaysDisplayWolfHead 4098
+ Bool display 128
+AlwaysDisplayItemInfo 4098
+ Bool display 128
+BankCollectBillOfExchangeQuest 4098
+ Int32 baseBillPrice 128
+BankCurrencyExchangeQuest 4098
+ Float orensExchangeModifier 128
+ Float florensExchangeModifier 128
+SetGeraltHairQuest 4098
+ CName hairstyleName 128
+SetGeraltTorsoQuest 4098
+ CName torsoName 128
+SetGeraltPalmsQuest 4098
+ CName palmsName 128
+E3TurnOffDebugPagesFromFastMenu 4098
+ Bool turnOn 128
+HealthBarVisiblityQuest 4098
+ CName npcTag 128
+ Bool show 128
+DetonatePetardQuest 4098
+ CName targetTag 128
+ Float detonationDelay 128
+SetMorphBlendQuest 4098
+ CName targetTag 128
+ Float morphRatio 128
+ Float blendTime 128
+ForceShowUpdateInfo 4098
+ String locKeyText 128
+ String locKeyTitle 128
+ShowStartScreen 4162
+ Float fadeOutTime 128
+ Float fadeInTime 128
+ Bool endWithBlackscreen 128
+ Bool isStageDemo 128
+ShowEndScreen 4162
+ Float fadeOutTime 128
+ Float fadeInTime 128
+ Bool isStageDemo 128
+ShowCompanionIndicator 4098
+ Bool enable 128
+ CName npcTag 128
+ String iconPath 1152
+ CName npcTag2 1152
+ String iconPath2 1152
+ShowBossFightIndicator 4098
+ Bool enable 128
+ CName bossTag 128
+SetShopPriceMultiplier 4098
+ Float priceMult 128
+ CName merchantTag 128
+OpenMeditation 4098
+ShaveGeralt_Quest 4098
+SetGeraltBeard_Quest 4098
+ Bool maxBeard 128
+ Int32 stage 1152
+SetTattoo_Quest 4098
+ Bool hasTattoo 128
+BlockBeardGrowth_Quest 4098
+ Bool block 1152
+SetCustomHead_Quest 4098
+ CName head 128
+ Bool barberSystem 128
+RemoveCustomHead_Quest 4098
+ Bool barberSystem 128
+CopyPlayersEquipmentToNPCQuest 4098
+ CName npcTag 128
+ Bool copyHead 128
+ Bool dontCopyHair 128
+MSDEMO_Init 4098
+ Bool enable 128
+ Bool skipCookedItems 128
+ Bool skipHerbs 128
+ShowTimeLapse 4098
+ Float showTime 128
+ String timeLapseMessageKey 1152
+ String timeLapseAdditionalMessageKey 1152
+RemoveErrandsFromNoticeboard 4098
+ CName boardTag 128
+ String errandName 128
+AddErrandsToTheNoticeBoard 4098
+ CName boardTag 128
+ array:2,0,ErrandDetailsList errandDetails 128
+FocusClueManager 4098
+ CName tag 128
+ EFocusClueAttributeAction actionType 128
+ Bool isAvailable 128
+ Bool isInteractive 128
+ Bool isReusable 128
+ Bool isVisible 128
+ Bool wasDetected 128
+ Bool isIgnoringFM 128
+FocusDestroyableClueManager 4098
+ CName tag 128
+ Bool destroyable 128
+ Bool triggerDestruction 128
+FocusSoundClueManager 4098
+ CName tag 128
+ EFocusModeSoundEffectType soundEffectType 128
+ CName startEventOverride 128
+ CName stopEventOverride 128
+FocusAreaIntensity 4098
+ CName areaTag 128
+ Float newIntensity 128
+FocusStashManager 4098
+ CName tag 128
+ Bool isDisabled 128
+FocusEffect 4098
+ EFocusEffectActivationAction actionType 128
+ CName effectName 128
+ CName effectEntityTag 128
+ Float duration 128
+FocusSetHighlight 4098
+ CName tag 128
+ EFocusModeVisibility highlightType 128
+ChangeWeatherQuest 4098
+ CName weatherName 128
+ Float blendTime 128
+ Bool randomGen 128
+EffectOnCamera 4098
+ CName effectName 128
+ Bool play 128
+PlayCameraEffect 4098
+ ECameraEffect animName 128
+ Float strength 128
+ Bool bLoop 128
+SetCameraFOV 4098
+ Float newFov 128
+RequestCameraRotation 4098
+ SQuestCameraRequest cameraRequest 128
+ResetCameraRotationRequest 4098
+EnableFastTravelMapPins 4098
+ array:2,0,CName pinTags 128
+ Bool enable 128
+DiscoverFastTravelMapPins 4098
+ array:2,0,CName pinTags 128
+ Bool show 128
+EnableGeraltPushing 4098
+ Bool enable 128
+EnableOrDisableContainers 4098
+ CName containersTag 128
+ Bool containerEnabled 128
+CombatStageChange 4098
+ CName npcsTag 128
+ ENPCFightStage stage 128
+AppearanceChange 4098
+ CName npcsTag 128
+ CName appearanceName 128
+SoundEventQuest 4098
+ String eventName 128
+ ESoundEventSaveBehavior saveBehavior 128
+SoundEventOnActorQuest 4098
+ CName actorTag 128
+ String eventName 128
+EnableFistFightMinigame 4162
+ Bool toTheDeath 128
+ array:2,0,CName npcTag 128
+ array:2,0,CName npcTeleportTag 1152
+ CName playerTeleportTag 1152
+HidePlayerItemQuest 4098
+AddItemQuest 4098
+ CName targetTag 128
+ CName itemName 128
+ Int32 quantity 128
+ array:2,0,SItem items 128
+ Bool informGUI 128
+AddItemQuestExt 4098
+ CName targetTag 128
+ array:2,0,SItemExt items 128
+ Bool informGUI 128
+EquipItemQuest 4098
+ CName targetTag 128
+ CName itemName 128
+ CName itemCategory 128
+ CName itemTag 128
+ Bool unequip 1152
+ Bool toHand 1152
+DropItemFromSlotQuest 4098
+ CName targetTag 128
+ CName slotName 128
+ Bool removeFromInv 1152
+EquipItemQuestExt 4098
+ CName targetTag 128
+ SItemNameProperty itemName 128
+ CName itemCategory 128
+ CName itemTag 128
+ Bool unequip 1152
+ Bool toHand 1152
+RemoveItemQuest 4098
+ CName entityTag 128
+ CName item_name 128
+ CName item_category 128
+ CName item_tag 128
+ Int32 quantity 1152
+RemoveItemQuestExt 4098
+ CName entityTag 128
+ SItemExt item_name 128
+ CName item_category 128
+ CName item_tag 128
+PlayEffectQuest 4098
+ CName entityTag 128
+ CName effectName 128
+ Bool activate 128
+ Bool persistentEffect 128
+ Bool deactivateAll 128
+ Bool preventEffectStacking 128
+PlayEffectWithTargetQuest 4098
+ CName entityTag 128
+ CName effectName 128
+ Bool activate 128
+ CName targetTag 128
+PlaySavableEffectQuest 4098
+ CName entityTag 128
+ CName effectName 128
+ Bool activate 128
+ CName targetTag 128
+ CName targetBone 128
+ActivateEnvironmentQuest 4098
+ handle:CEnvironmentDefinition environmentDefinition 128
+ Int32 priority 128
+ Float blendFactor 128
+ Float blendTime 128
+DectivateEnvironmentQuest 4098
+ Float blendTime 128
+SetPlayerOxygen 4098
+ Int32 percents 128
+ Bool relative 128
+SetPlayerAdrenaline 4098
+ Int32 percents 128
+ Bool relative 128
+SetHealthQuest 4098
+ CName targetTag 128
+ Int32 healthPerc 128
+ Bool relative 128
+ Bool shouldPlayHitParticle 128
+SetNPCIsAttackableByPlayer 4098
+ CName npcTag 128
+ Bool persistent 128
+ Bool attackable 128
+ Float timeout 1152
+SetRewardModifierQuest 4098
+ handle:CStoryScenePlayer player 128
+ CName rewardName 128
+ Float modifer 128
+ Bool onlyIfDoesntExist 128
+SetImmortalQuest 4098
+ CName targetsTag 128
+ EActorImmortalityMode immortalityMode 128
+ Float unconsciousMinDuration 1152
+ChangeUnconsciousDuration 4098
+ CName targetsTag 128
+ Float newMinDuration 128
+ChangePlayerQuest 4162
+ EQuestReplacerEntities designatedTemplate 128
+ModifyNPCAbilityQuest 4098
+ CName npcTag 128
+ CName abilityName 128
+ Bool remove 128
+ModifyPlayerAbilityQuest 4098
+ CName abilityName 128
+ Bool remove 128
+ResetFactQuest 4098
+ CName factID 128
+RemoveFactQuest 4098
+ CName factId 128
+CloneFactQuest 4098
+ CName SourceFactID 128
+ CName TargetFactID 128
+FadeOutQuest 4098
+ Float fadeTime 128
+ Color fadeColor 128
+FadeInQuest 4098
+ Float fadeTime 128
+ShowFastTravelLoadingScreen 4098
+ Float fadeTime 128
+ Bool enable 128
+SwitchComponentStateQuest 4098
+ Bool shouldBeEnabled 128
+ CName objectTag 128
+ String componentName 128
+TransferPlayerItemsQuest 4098
+ CName designatedContainerTag 128
+ EItemSelectionType itemSelectionType 128
+ Bool steelSword 128
+ Bool silverSword 128
+ Bool chestArmor 128
+ Bool boots 128
+ Bool gloves 128
+ Bool pants 128
+ Bool trophy 128
+ Bool mask 128
+ Bool bombs 128
+ Bool lures 128
+ Bool crossbow 128
+ Bool secondaryWeapon 128
+ Bool fromContainerToPlayer 1152
+ Bool equipAfterTransfer 1152
+TransferItemQuest 4098
+ CName sourceTag 128
+ CName targetTag 128
+ CName itemName 128
+ CName itemCategory 128
+ CName itemTag 128
+ Int32 quantity 128
+RememberPlayerEquipment 4098
+UnequipPlayerItemsQuest 4098
+ Bool steelSword 128
+ Bool silverSword 128
+ Bool chestArmor 128
+ Bool boots 128
+ Bool gloves 128
+ Bool pants 128
+ Bool trophy 128
+ Bool bombs 128
+ Bool lures 128
+ Bool mask 128
+ Bool potions 128
+ Bool quickslot 128
+ Bool bolts 128
+ Bool all 128
+ Bool crossbow 128
+ Bool equipItems 128
+ Bool rememberEquipment 128
+ array:2,0,SItemNameProperty excludedItems 128
+ Bool excludeHair 128
+ Bool secondaryWeapon 128
+ChangeNPCStateQuest 4098
+ CName npcTag 128
+ EQuestNPCStates npcState 128
+ Bool ignoreImmortalityMode 128
+ChangeNPCStanceQuest 4098
+ CName npcTag 128
+ ENpcStance npcStance 128
+AddNPCModifierQuest 4098
+ CName npcTag 128
+ array:2,0,EEffectType buffEffects 128
+ Bool remove 128
+ Bool removeAll 128
+ Float duration 128
+ Float valueAdditive 128
+ Float valueMultiplicative 128
+ Float valueBase 128
+ Bool pause 128
+ Bool resume 128
+ Bool force 128
+ CName pauseResumeSource 128
+DrawWeaponQuest 4098
+ EDrawWeaponQuestType weapon 128
+ Bool dontIgnoreDrawActionLock 128
+DespawnNPCsWithTag 4098
+ CName tag 128
+RequestSwarmAttackPlayer 4098
+ CName tag 128
+ ESwarmStateOnArrival stateAfterAttack 128
+ String onArrivalFactID 128
+ Int32 onArrivalFactValue 128
+RequestSwarmGoTo 4098
+ CName lairTag 128
+ CName initialStateName 128
+ ESwarmStateOnArrival stateAfterAttack 128
+ String onArrivalFactID 128
+ Int32 onArrivalFactValue 128
+SwarmFlying_RequestGroupStateChange_Quest 4098
+ CName lairTag 128
+ CName groupState 128
+ Bool affectAllGroups 128
+SwarmFlying_RequestAllGroupsInstantDespawn_Quest 4098
+ CName lairTag 128
+ActivateQuestBonus 4098
+ CName merchantTag 128
+GetItem 2
+ handle:CInventoryComponent inv 128
+ CName category 128
+ SItemUniqueId itemId 640
+AnimalNervousState 4098
+ CName npcsTag 128
+ EAnimalReaction reactionType 128
+ Int32 percents 128
+TeleportObject 4098
+ CName objectTag 128
+ CName destinationTag 128
+ Float xOffset 128
+ Float yOffset 128
+ Float zOffset 128
+ Bool useSafePlacement 128
+ Bool onSafePlacementFailUseBruteForce 128
+FaceObjectQuest 4098
+ CName objectsTag 128
+ CName TargetTag 128
+ Float degreeModifier 128
+AddTagToEntitiesQuest 4098
+ CName entityTag 128
+ CName newTag 128
+ Bool remove 128
+AddTagToNPCsQuest 4098
+ CName npcTag 128
+ CName newTag 128
+ Bool remove 128
+AddTagToNearestActorQuest 4098
+ CName actorTag 128
+ CName newTag 128
+ Bool remove 128
+AddTagToClosestNode 4098
+ CName nodesTag 128
+ CName newTag 128
+ Bool remove 128
+ChangeCombatStyleByTag 4098
+ EBehaviorGraph preferedCombatStyle 128
+ CName npcTag 128
+CameraShake 4098
+ Float strength 128
+StopCameraShake 4098
+ CName animName 128
+InstantMountPlayer 4098
+ CName vehicleTag 128
+ EVehicleType vehicleType 128
+ Bool dismount 128
+ Bool useAnim 128
+InstantDismountPlayer 4098
+InstantMountNPC 4098
+ CName npcTag 128
+InstantDismountNPC 4098
+ CName npcTag 128
+ EDismountType dismountType 128
+TameHorse 4098
+ CName horseTag 128
+ Bool tame 128
+ CName riderTag 128
+SoundSetState 4098
+ ESoundGameState soundState 128
+DoorChangeState 4098
+ CName tag 128
+ EDoorQuestState newState 128
+ CName keyItemName 1152
+ Bool removeKeyOnUse 1152
+ Bool smoooth 1152
+BlockLockableInteraction 4098
+ CName tag 128
+ Bool block 128
+QuestHelper_BlockGameplayFunctionality 66
+ EInputActionBlock act 128
+ CName sourceName 128
+ Bool lock 128
+BlockGameplayFunctionality 4162
+ Bool lock 128
+ CName sourceName 128
+ Bool signs 128
+ Bool drawWeapon 128
+ Bool openInventory 128
+ Bool openPreparation 128
+ Bool radialMenu 128
+ Bool callHorse 128
+ Bool fastTravel 128
+ Bool movement 128
+ Bool jump 128
+ Bool meditation 128
+ Bool bombThrow 128
+ Bool runAndSprint 128
+ Bool sprint 128
+ Bool openMap 128
+ Bool openCharacterPanel 128
+ Bool openJournal 128
+ Bool highlightObjective 128
+ Bool openAlchemy 128
+ Bool explorationFocus 128
+ Bool dive 128
+ Bool interactions 128
+ Bool explorations 128
+ Bool climb 128
+ Bool slide 128
+ Bool mount 128
+ Bool dismount 128
+ Bool fistFight 128
+ Bool swordAttacks 128
+ Bool lightAttacks 128
+ Bool heavyAttacks 128
+ Bool dodgee 128
+ Bool roll 128
+ Bool parry 128
+ Bool counter 128
+ Bool quickslots 128
+ Bool custom0 128
+ Bool crossbow 128
+ Bool usableItem 128
+ Bool openGlossary 128
+ Bool hardLockTarget 128
+ Bool meditationWaiting 128
+ Bool interactionContainers 128
+ Bool XXXXXXX 128
+ Bool allGUI 128
+ Bool all 128
+ Bool sheatheWeaponIfDrawn 128
+ Bool specialLightAttack 128
+ Bool specialHeavyAttack 128
+ Bool openGwint 128
+ Bool openFastMenu 128
+ Bool openMeditation 128
+ShootProjectileByTag 4098
+ CName projectileTag 128
+ CName targetTag 1152
+ Float speed 1152
+ Float angle 1152
+ Float range 1152
+ShootProjectileByEntityName 4098
+ String advProjectileName 128
+ CName sourceTag 128
+ CName slotName 1152
+ CName targetTag 128
+ Float speed 1152
+ Float angle 1152
+ Float range 1152
+ Float damage 1152
+bgfsinglechannels 258
+bgfstatus 258
+TogglePhysicalDamageMechanismByTag 4162
+ CName tag 128
+ Bool toggle 128
+KillPlayer 4098
+ Bool ignoreImmortalityMode 128
+spawnBoatAndMount 258
+ToggleRagdollByTag 4098
+ CName tag 128
+ Bool toggle 128
+MonsterHuntingClueHandler 4098
+ CName huntingNumber 128
+ CName clueNumber 128
+TryToAddUniqueFact 4098
+ CName uniqueFactName 128
+DispelIllusionQuest 4098
+ CName spawnerTag 128
+EnableIllusionQuest 4098
+ CName illusionTag 128
+ Bool enabled 128
+SwitchTrapActivation 4098
+ Bool activate 128
+ CName trapTag 128
+ CName targetTag 1152
+ Bool armInsteadOfActivate 128
+EnableTrapTrigger 4098
+ CName triggerTag 128
+ Bool enable 128
+ManageDamageAreaTrigger 4098
+ CName damageAreaTag 128
+ CName affectedEntityTag 128
+ Bool activate 128
+ManageEffectAreaTrigger 4098
+ CName effectAreaTag 128
+ Bool activate 128
+ Bool updateEffects 128
+ManageOilBarrels 4098
+ CName barrelsTag 128
+ array:2,0,EOilBarrelOperation executeAction 128
+ManageRift 4098
+ CName riftTag 128
+ Bool activate 128
+ Bool dontActivateEncounter 128
+ManageRiftDisabling 4098
+ CName riftTag 128
+ Bool canBeDisabled 128
+ManageTeleport 4098
+ CName teleportTag 128
+ Bool enabling_activating 128
+ Bool value 128
+ Bool keepBlackscreen 128
+ Float activationTime 128
+ManageToxicCloud 4098
+ CName toxicCloudsTag 128
+ array:2,0,EToxicCloudOperation executeAction 128
+BlockActorAbility 4098
+ CName actorTag 128
+ CName abilityName 128
+ Bool unBlock 128
+BroadcastDanger 4098
+ Float lifetime 128
+ Float distance 128
+ Float interval 128
+AddRaceSlowMo 4098
+ Float factor 128
+RemoveRaceSlowMo 4098
+SetBarrelsOnFire 4098
+ CName tag 128
+ Float explodeTime 128
+ Bool randomize 1152
+EnableBeeSwarm 4098
+ CName tag 128
+StartHeartFight 4098
+ CName tag 128
+KillHeart 4098
+ CName tag 128
+HorseWhistle 4098
+LockReactions 4098
+ Bool toggle 128
+ CName areaTag 128
+MeditationStop 4098
+ToggleHorseCanFlee 4098
+ CName tag 128
+ Bool value 128
+ForceDismount 4098
+ CName horseTag 128
+E3_StageDemoInit 4098
+AddItemOnNPC_S 2050
+ handle:CStoryScenePlayer player 128
+ CName npc 128
+ CName item_name 128
+ Int32 quantity 1152
+ Bool dontInformGUI 128
+SetCiriLevel 4098
+ Int32 level 128
+SetNPCLevel 4098
+ CName npcTag 128
+ Int32 level 128
+Q001_EquipFood 4098
+SetGeraltLevelHandsOn 4098

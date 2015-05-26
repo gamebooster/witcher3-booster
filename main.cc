@@ -126,8 +126,8 @@ static hook::thiscall_stub<CFunction*(CRTTISystem*, CName&)> FindGlobalFunctionH
 class CRTTISystem {
 public:
   char _0x0000[64];
-  uint32_t native_globals_sort; //0x0040 
-  uint32_t native_globals_count; //0x0044 
+  uint32_t native_globals_count; //0x0040 
+  uint32_t native_globals_count2; //0x0044 
   char _0x0048[24];
   uint64_t* global_function_register; //0x0060
 
