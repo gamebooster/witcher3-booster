@@ -6,6 +6,8 @@ Various tweaks for Witcher 3
 
 ### Console functions
 
+Complete dump with arguments: https://github.com/gamebooster/witcher3-booster/blob/master/global_functions_log.txt
+
 With the help by multiple people from this thread: http://forums.nexusmods.com/index.php?showtopic=2885919
 
 * `replaceplayer('Ciri')` - play with Ciri
