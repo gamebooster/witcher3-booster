@@ -93,8 +93,7 @@ struct CFunction {
   uint64_t vtable;
   uint64_t unknown_0;
   CName name;
-  uint16_t flags;
-  uint16_t align_2;
+  uint32_t flags;
   uint64_t unknown_1;
   uint64_t* property_array;
   uint32_t argument_count;
@@ -119,31 +118,40 @@ struct CFunction {
 
 static_assert(sizeof(CFunction) == 208, "CFunction has wrong size!");
 
-static hook::thiscall_stub<CFunction*(CRTTISystem*, CName&)> FindGlobalFunctionHook([]() {
+static hook::thiscall_stub<CFunction*(CRTTISystem*, CName&)> CRTTISystem_FindGlobalFunction([]() {
   return hook::pattern("83 79 44 00 74 2E").count(1).get(0).get<void>(0);
+});
+
+struct TDynArray {
+  uint64_t* base_pointer;
+  uint32_t count;
+  uint32_t max;
+  uint64_t begin;
+};
+
+static hook::thiscall_stub<void(CRTTISystem*, TDynArray&)> CRTTISystem_EnumFunctions([]() {
+  return hook::pattern("48 89 5C 24 ? 48 89 6C 24 ? 56 57 41 55 41 56 41 57 48 83 EC 30 33 FF").count(1).get(0).get<void>(0);
 });
 
 class CRTTISystem {
 public:
-  char _0x0000[64];
-  uint32_t native_globals_count; //0x0040 
-  uint32_t native_globals_count2; //0x0044 
-  char _0x0048[24];
-  uint64_t* global_function_register; //0x0060
 
-  CFunction* FindGlobalFunction(CName& name) { return FindGlobalFunctionHook(this, name); }
+  CFunction* FindGlobalFunction(CName& name) { return CRTTISystem_FindGlobalFunction(this, name); }
+  void EnumFunctions(TDynArray& array) { CRTTISystem_EnumFunctions(this, array); }
 
   void DumpGlobalFunctions() {
-    if (!native_globals_count) return;
-
     std::wofstream log_file;
     log_file.open("global_functions_log.txt");
 
-    for (size_t i = 0; i < native_globals_count; i++) {
-      auto function_entry = (global_function_register + i);
-      if (!function_entry || !*function_entry) continue;
-      auto function = *(CFunction**)(*function_entry + 0x8);
-      if (!function) continue;
+    TDynArray functions;
+    functions.base_pointer = &functions.begin;
+    functions.count = 0;
+    functions.max = 0;
+    EnumFunctions(functions);
+
+    for (size_t i = 0; i < functions.count; i++) {
+      auto function = *(CFunction**)(functions.base_pointer + i);
+      if (!function || !(function->flags & (1 << 8))) continue;
 
       log_file << function->name.AsChar() << " " << std::dec << function->flags << std::endl;
       for (size_t i = 0; i < function->argument_count; i++) {
