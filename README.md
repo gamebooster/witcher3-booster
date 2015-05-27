@@ -31,7 +31,10 @@ With the help by multiple people from this thread: http://forums.nexusmods.com/i
 *  `spawnenemy()`
 *  `buffme(EET_KillerWhale, 60)` enum `EEffectType`
 *  `addexp (1000)`
-*  `winGwint(122)`
+*  `winGwint(true)`
+*  `setlevel(5)`
+*  `addskillpoints(2)`
+*  `killall(50)` range
 *  `makeitrain`
 * `stoprain`
 * Usage: `xy(posX,posY)`
