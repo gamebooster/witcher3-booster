@@ -124,7 +124,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
@@ -155,6 +155,7 @@
     <ClCompile Include="vtable\vmthooks.cc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="enums.h" />
     <ClInclude Include="hooking\HookFunction.h" />
     <ClInclude Include="hooking\Hooking.FuncCalls.h" />
     <ClInclude Include="hooking\Hooking.h" />

@@ -30,6 +30,18 @@ inline void set_base()
 	set_base((uintptr_t)GetModuleHandle(NULL));
 }
 
+// adjusts the address passed to the base as set above
+template<typename T>
+inline void adjust_base(T& address) {
+  //*(uintptr_t*)&address += baseAddressDifference;
+}
+
+// returns the adjusted address to the stated base
+template<typename T>
+inline uintptr_t get_adjusted(T address) {
+  return address;
+}
+
 struct pass
 {
 	template<typename ...T> pass(T...) {}
@@ -403,7 +415,7 @@ template<typename T, typename AT>
 inline void jump(AT address, T func)
 {
 	put<uint8_t>(address, 0xE9);
-	put<int>((uintptr_t)address + 1, (intptr_t)func - (intptr_t)get_adjusted(address) - 5);
+	put<int>((uintptr_t)address + 1, (intptr_t)func - address - 5);
 }
 
 template<typename T, typename AT>

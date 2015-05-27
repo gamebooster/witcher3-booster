@@ -1,9 +1,10 @@
 #include <windows.h>
+#include <fstream>
 
 #include "vtable/vmthooks.h"
 #include "hooking/Hooking.h"
 
-#include <fstream>
+#include "enums.h"
 
 HANDLE thread = nullptr;
 utils::VtableHook* game_hook = nullptr;
@@ -160,6 +161,24 @@ struct CEnum {
   int FindValue(CName& name, int& out) { return CEnum_FindValue(this, name, out); }
 };
 
+class CGame;
+
+static hook::thiscall_stub<void(CGame*, bool toggle)> CGame_EnableFreeCamera([]() {
+  return hook::pattern("40 53 48 83 EC 40 48 8B D9 E8 ? ? ? ? 80 BB ? ? ? ? ?").count(1).get(0).get<void>(0);
+});
+
+static hook::thiscall_stub<bool(CGame*, EInputKey, EInputAction, float)> CGame_ProcessFreeCameraInput([]() {
+  return hook::pattern("48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 40 80 3D").count(1).get(0).get<void>(0);
+});
+
+class CGame {
+public:
+  void EnableFreeCamera(bool toggle) { CGame_EnableFreeCamera(this, toggle); }
+  bool ProcessFreeCameraInput(EInputKey key, EInputAction action, float tick) { return CGame_ProcessFreeCameraInput(this, key, action, tick); }
+};
+
+CGame** global_game = nullptr;
+
 static hook::thiscall_stub<void(CRTTISystem*, TDynArray&)> CRTTISystem_EnumFunctions([]() {
   return hook::pattern("48 89 5C 24 ? 48 89 6C 24 ? 56 57 41 55 41 56 41 57 48 83 EC 30 33 FF").count(1).get(0).get<void>(0);
 });
@@ -216,7 +235,7 @@ public:
 
     for (size_t i = 0; i < functions.count; i++) {
       auto function = *(CFunction**)(functions.base_pointer + i);
-      if (!function || !(function->flags & (1 << 8))) continue;
+      if (!function) continue; // || !(function->flags & (1 << 8))) continue;
 
       log_file << function->name.AsChar() << " " << std::dec << function->flags << std::endl;
       for (size_t i = 0; i < function->argument_count; i++) {
@@ -229,10 +248,53 @@ public:
   }
 };
 
-typedef bool(*OnViewportInputType) (void* thisptr, void* viewport, int input_key, int input_action, float tick);
+class CRTTISerializer;
+class TString;
+
+static hook::thiscall_stub<void(CRTTISerializer*)> CRTTISerializer_Constructor([]() {
+  return hook::pattern("48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 30 33 F6 48 8B D9 48 83 C1 28 48 89 71 D8 48 89 71 E0 48 89 71 E8 48 89 71 F0 48 89 71 F8").count(1).get(0).get<void>(0);
+});
+
+static hook::thiscall_stub<bool(CRTTISerializer*, TString*, bool)> CRTTISerializer_LoadScriptDataFromFile([]() {
+  return hook::pattern("48 89 5C 24 ? 48 89 74 24 ? 48 89 7C 24 ? 4C 89 74 24 ? 55 48 8B EC 48 81 EC ? ? ? ? 48 8B F1").count(1).get(0).get<void>(0);
+});
+
+class TString {
+public:
+  wchar_t* buffer_address;
+  uint32_t length;
+  uint32_t max;
+  wchar_t buffer[512];
+
+  TString(wchar_t* string) {
+    buffer_address = buffer;
+    wcscpy_s(buffer, 512, string);
+    length = wcslen(string);
+    max = 512;
+  }
+};
+
+class CRTTISerializer {
+  char _0x00[1000];
+public:
+  CRTTISerializer() {
+    CRTTISerializer_Constructor(this);
+  }
+
+  bool LoadScriptDataFromFile(TString* name, bool validate) { return CRTTISerializer_LoadScriptDataFromFile(this, name, validate); }
+};
+
+typedef bool(*OnViewportInputType) (void* thisptr, void* viewport, EInputKey input_key, EInputAction input_action, float tick);
 OnViewportInputType OnViewportInputDebugConsole = nullptr;
 
-bool OnViewportInputDebugAlwaysHook(void* thisptr, void* viewport, int input_key, int input_action, float tick) {
+bool OnViewportInputDebugAlwaysHook(void* thisptr, void* viewport, EInputKey input_key, EInputAction input_action, float tick) {
+  if ((*global_game)->ProcessFreeCameraInput(input_key, input_action, tick)) return true;
+
+  if (input_key == IK_F2 && input_action == IACT_Release) {
+    input_key = IK_Tilde;
+    input_action = IACT_Press;
+  }
+
   return OnViewportInputDebugConsole(*global_debug_console, viewport, input_key, input_action, tick);
 }
 
@@ -252,18 +314,41 @@ void ReplaceFunction(const char* name, uint64_t address) {
   }
 }
 
+static void ScriptWarn(void* thisptr, void* file_context, TString* message) {
+  std::wofstream log_file;
+  log_file.open("script_compilation.log", std::ios_base::app);
+  log_file << "warn: " << message->buffer_address << std::endl;
+  log_file.close();
+}
+
+static void ScriptError(void* thisptr, void* file_context, TString* message) {
+  std::wofstream log_file;
+  log_file.open("script_compilation.log", std::ios_base::app);
+  log_file << "error: " << message->buffer_address << std::endl;
+  log_file.close();
+}
+
 DWORD WINAPI InitializeHook(void* arguments) {
   hook::set_base();
   HookFunction::RunAll();
 
+  //char* location = hook::pattern("48 8D 35 ? ? ? ? 48 8D 54 24 ?").count(1).get(0).get<char>(3);
+  //void* compilation_messages = reinterpret_cast<void*>(location + *(int32_t*)location + 4);
+
+  //DWORD old_protect;
+
+  //if (VirtualProtect((void*)((uint64_t)compilation_messages + 2 * 8), 16, PAGE_EXECUTE_READWRITE, &old_protect)) {
+  //  *(uint64_t*)((uint64_t)compilation_messages + 2 * 8) = (uint64_t)&ScriptWarn;
+  //  *(uint64_t*)((uint64_t)compilation_messages + 3 * 8) = (uint64_t)&ScriptError;
+  //}
+
   char* location = hook::pattern("48 8B 05 ? ? ? ? 48 8D 4C 24 ? C6 44 24").count(1).get(0).get<char>(3);
-  void** global_game = reinterpret_cast<void**>(location + *(int32_t*)location + 4);
+  global_game = reinterpret_cast<CGame**>(location + *(int32_t*)location + 4);
 
   location = hook::pattern("48 89 05 ? ? ? ? EB 07 48 89 35 ? ? ? ? 48 8B 47 60").count(1).get(0).get<char>(3);
   global_debug_console = reinterpret_cast<void**>(location + *(int32_t*)location + 4);
 
   while (*global_game == nullptr || *global_debug_console == nullptr) {
-    OutputDebugStringW(L"Wait for game");
     Sleep(500);
   }
 
@@ -276,12 +361,19 @@ DWORD WINAPI InitializeHook(void* arguments) {
   location = hook::pattern("4C 8D 0D ? ? ? ? 49 89 14 C1").count(1).get(0).get<char>(3);
   native_globals_function_map = reinterpret_cast<void*>(location + *(int32_t*)location + 4);
 
-  OutputDebugStringW(L"Hook game");
-
   game_hook = new utils::VtableHook(*global_game);
   game_hook->HookMethod(OnViewportInputDebugAlwaysHook, 128);
 
+
+  //CRTTISerializer serializer;
+  //TString path(L"x64.final.redscripts ");
+
+  //if(serializer.LoadScriptDataFromFile(&path, false)) {
+  //  OutputDebugStringW(L"Load custom script file");
+  //};
+
   //rtti_system->DumpGlobalFunctions();
+
   //rtti_system->DumpEnums();
 
   //ReplaceFunction("Log", (uint64_t)&funcLogHook);

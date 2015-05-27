@@ -306,8 +306,6 @@ addmisc 258
 addhorseitems 258
 WitcherHairstyle 258
  Int32 number 128
-IsInInterior 258
- CName tag 128
 addupgrades 258
  Int32 count 1152
  Bool dontOpenUI 1152
@@ -362,6 +360,8 @@ SuppressReactions 258
  CName areaTag 128
 dressmeup 258
  Int32 i 128
+IsInInterior 258
+ CName tag 128
 undressme 258
  Int32 i 128
 healme 258
@@ -401,8 +401,6 @@ useoil 258
  Int32 type 1152
 oilstats 258
 oilstatsciri 258
-SimulateDLCsAvailable 258
- Bool value 128
 testoil 258
 testoilciri 258
 playerkill 258
@@ -480,6 +478,8 @@ ut 258
 setpri 258
  CName tag 128
  Int32 value 128
+SimulateDLCsAvailable 258
+ Bool value 128
 setcol 258
  Bool value 128
 addpotions 258
@@ -547,8 +547,6 @@ stagger 258
  CName tag 128
 printstate 258
 SetEasy 258
-faction 258
- Int32 i 128
 SetMedium 258
 SetHard 258
 SetHardcore 258
@@ -634,6 +632,8 @@ skilluneq 258
  Int32 id 128
 skilleqtest 258
 printeqskills 258
+faction 258
+ Int32 i 128
 actionBlock 258
  EInputActionBlock action 128
  Bool block 128
@@ -759,8 +759,6 @@ setAIDeck 258
  CName deckName 128
 secretgwintAI 258
 secretdeckbuilder 258
-SoundEvent 258
- String soundName 128
 resetDecks 258
 winGwint 258
  Bool result 128
@@ -850,6 +848,8 @@ vcrafting 258
 gather 258
  Float range 1152
 hackknockdown 258
+SoundEvent 258
+ String soundName 128
 zzz 258
 InvertCamera 258
  Bool invert 128
@@ -923,10 +923,10 @@ XDPPrintUserStats 258
  String statisticName 128
 XDPPrintUserAchievement 258
  String achievementName 128
-ForceGraphicalLOD 258
- Int32 lodLevel 128
 NewGamePlus 258
  Bool flag 128
+ForceGraphicalLOD 258
+ Int32 lodLevel 128
 ForceCombatMode 258
  Bool flag 128
 CreateReactionEvent 258
@@ -935,16 +935,16 @@ CreateReactionEvent 258
  Float lifetime 128
  Float broadcastInterval 128
 RestoreHorseManager 258
-proxy 258
 appearance 258
  CName app 128
+proxy 258
 attitude 258
  CName tag 128
  Bool flag 128
-EnableLog 258
- Bool enable 128
 EnablePCMode 258
  Bool flag 128
+EnableLog 258
+ Bool enable 128
 HideHorse 258
 KillHorse 258
 PerformCounter 258
