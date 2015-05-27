@@ -13,6 +13,7 @@ class CRTTISystem;
 struct CFunction;
 struct CName;
 struct CNameHash;
+struct CEnum;
 
 CRTTISystem* rtti_system = nullptr;
 void* native_globals_function_map = nullptr;
@@ -61,6 +62,7 @@ static hook::thiscall_stub<const wchar_t*(CName*)> CName_AsChar([]() {
 
 struct CName {
   uint32_t pool_index;
+  CName() { pool_index = 0; };
   CName(CNameHash hash) {
     CName_CreateNameFromHash(this, hash);
   }
@@ -122,6 +124,7 @@ static hook::thiscall_stub<CFunction*(CRTTISystem*, CName&)> CRTTISystem_FindGlo
   return hook::pattern("83 79 44 00 74 2E").count(1).get(0).get<void>(0);
 });
 
+
 struct TDynArray {
   uint64_t* base_pointer;
   uint32_t count;
@@ -129,8 +132,40 @@ struct TDynArray {
   uint64_t begin;
 };
 
+static hook::thiscall_stub<int(CEnum*, CName&, int&)> CEnum_FindValue([]() {
+  return hook::pattern("83 79 24 00 74 32").count(1).get(0).get<void>(0);
+});
+
+static hook::thiscall_stub<bool(CEnum*, int, CName&)> CEnum_FindName([]() {
+  return hook::pattern("83 79 54 00 44 8B D2 ").count(1).get(0).get<void>(0);
+});
+
+struct CEnum {
+  uint64_t vtable;
+  CName name;
+  DWORD N27E745C8; //0x000C 
+  void* names; //0x0010 
+  DWORD names_count; //0x0018 
+  char _0x001C[4];
+  DWORD value_count; //0x0020 
+  DWORD N27EF6229; //0x0024 
+  char _0x0028[24];
+  void* values; //0x0040 
+  char _0x0048[56];
+  DWORD flags; //0x0080 
+  BYTE unknown; //0x0084 
+  char _0x0085[3];
+
+  bool FindName(int index, CName& name) { return CEnum_FindName(this, index, name); }
+  int FindValue(CName& name, int& out) { return CEnum_FindValue(this, name, out); }
+};
+
 static hook::thiscall_stub<void(CRTTISystem*, TDynArray&)> CRTTISystem_EnumFunctions([]() {
   return hook::pattern("48 89 5C 24 ? 48 89 6C 24 ? 56 57 41 55 41 56 41 57 48 83 EC 30 33 FF").count(1).get(0).get<void>(0);
+});
+
+static hook::thiscall_stub<void(CRTTISystem*, TDynArray&)> CRTTISystem_EnumEnums([]() {
+  return hook::pattern("40 53 41 56 41 57 48 83 EC 30 33 DB 4C 8B F2 4C 8B F9 39 59 14").count(1).get(0).get<void>(0);
 });
 
 class CRTTISystem {
@@ -138,6 +173,36 @@ public:
 
   CFunction* FindGlobalFunction(CName& name) { return CRTTISystem_FindGlobalFunction(this, name); }
   void EnumFunctions(TDynArray& array) { CRTTISystem_EnumFunctions(this, array); }
+  void EnumEnums(TDynArray& array) { CRTTISystem_EnumEnums(this, array); }
+
+  void DumpEnums() {
+    std::wofstream log_file;
+    log_file.open("global_enums_log.txt");
+
+    TDynArray enums;
+    enums.base_pointer = &enums.begin;
+    enums.count = 0;
+    enums.max = 0;
+    EnumEnums(enums);
+
+    for (size_t i = 0; i < enums.count; i++) {
+      auto enum_ = *(CEnum**)(enums.base_pointer + i);
+      if (!enum_) continue;
+
+      log_file << enum_->name.AsChar() << " " << std::dec << enum_->names_count << " " << std::dec << enum_->flags << " " << enum_->unknown << std::endl;
+      for (size_t i = 0; i < enum_->names_count; i++) {
+        CName name;
+        enum_->FindName(i, name);
+        if (name.pool_index) {
+          int value;
+          enum_->FindValue(name, value);
+          log_file << " " << name.AsChar() << " " << value << std::endl;
+        }
+      }
+    }
+
+    log_file.close();
+  }
 
   void DumpGlobalFunctions() {
     std::wofstream log_file;
@@ -217,6 +282,7 @@ DWORD WINAPI InitializeHook(void* arguments) {
   game_hook->HookMethod(OnViewportInputDebugAlwaysHook, 128);
 
   //rtti_system->DumpGlobalFunctions();
+  //rtti_system->DumpEnums();
 
   //ReplaceFunction("Log", (uint64_t)&funcLogHook);
   //ReplaceFunction("LogChannel", (uint64_t)&funcLogHook);
