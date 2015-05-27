@@ -27,6 +27,7 @@ With the help by multiple people from this thread: http://forums.nexusmods.com/i
 *  `testunpause()`
 *  `likeaboss()`
 *  `spawnenemy()`
+*  `buffme(EET_KillerWhale, 60)` enum `EEffectType`
 *  `addexp (1000)`
 *  `winGwint(122)`
 *  `makeitrain`
