@@ -12,6 +12,8 @@ Enum dump: https://github.com/gamebooster/witcher3-booster/blob/master/global_en
 
 With the help by multiple people from this thread: http://forums.nexusmods.com/index.php?showtopic=2885919
 
+* [`spawn('katakan', 3, 10, true)`](https://github.com/gamebooster/witcher3-booster/blob/d0f0c1e028cee21cefed096b6b56624485ef38a6/global_functions_log.txt#L464)
+  * entity names in `patch0\bundles\gameplay\globals\resources\gameplay.xml` (decompress patch0.bundle via quickbms http://aluigi.altervista.org/papers/bms/others/witcher3.bms)
 * `replaceplayer('Ciri')` - play with Ciri
 * `addmoney(11)`
 * `removemoney(11)`
