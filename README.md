@@ -38,7 +38,7 @@ Tip: active godmode to avoid falldamage after teleportation (god())
 
 * `shave()`
 * `settime(TIME)`
-* `Changeweather(WT_Clear)` - you can find a list of the available weather in startup.bundle file (/engine/environments/weather_YOURREGION.csv) e.g. snow in novigrad: WT_Snow
+* `changeweather(WT_Heavy_Clouds)` - you can find a list of the available weather in startup.bundle file (/engine/environments/weather_YOURREGION.csv) e.g. snow in novigrad: `WT_Snow`
 * `healme()` - you get full health
 * `secretgwint()` - starts gwint game
 * addbolts
