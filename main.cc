@@ -205,7 +205,6 @@ DWORD WINAPI InitializeHook(void* arguments) {
   game_hook = new utils::VtableHook(*global_game);
   game_hook->HookMethod(OnViewportInputDebugAlwaysHook, 128);
 
-
   location = hook::pattern("E8 ? ? ? ? FF C3 48 83 C7 10 48 83 C6 08").count(1).get(0).get<char>(0);
   hook::nop(location, 5);
 

@@ -153,19 +153,23 @@ static hook::thiscall_stub<void(TString*, const wchar_t*)> TString_Constructor([
   return reinterpret_cast<void*>(location + *(int32_t*)location + 4);
 });
 
+static hook::thiscall_stub<void(TString*)> TString_Deconstructor([]() {
+  char* location = hook::pattern("E8 ? ? ? ? 48 89 9C 24 ? ? ? ? 48 89 BC 24").count(1).get(0).get<char>(1);
+  return reinterpret_cast<void*>(location + *(int32_t*)location + 4);
+});
+
 class TString {
 public:
   wchar_t* buffer_address;
   uint32_t length;
   uint32_t max;
-  //wchar_t buffer[512];
 
   TString(const wchar_t* string) {
     TString_Constructor(this, string);
-    //buffer_address = buffer;
-    //wcscpy_s(buffer, 512, string);
-    //length = wcslen(string);
-    //max = 512;
+  }
+
+  ~TString() {
+    TString_Deconstructor(this);
   }
 };
 
@@ -207,6 +211,11 @@ static hook::thiscall_stub<void(CRTTISerializer*)> CRTTISerializer_Constructor([
   return hook::pattern("48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 30 33 F6 48 8B D9 48 83 C1 28 48 89 71 D8 48 89 71 E0 48 89 71 E8 48 89 71 F0 48 89 71 F8").count(1).get(0).get<void>(0);
 });
 
+static hook::thiscall_stub<void(CRTTISerializer*)> CRTTISerializer_Deconstructor([]() {
+  char* location = hook::pattern("E8 ? ? ? ? 48 8D 4C 24 ? E8 ? ? ? ? 48 89 9C 24").count(1).get(0).get<char>(1);
+  return reinterpret_cast<void*>(location + *(int32_t*)location + 4);
+});
+
 static hook::thiscall_stub<bool(CRTTISerializer*, TString*, bool)> CRTTISerializer_LoadScriptData([]() {
   return hook::pattern("48 89 5C 24 ? 48 89 74 24 ? 48 89 7C 24 ? 4C 89 74 24 ? 55 48 8B EC 48 81 EC ? ? ? ? 48 8B F1").count(1).get(0).get<void>(0);
 });
@@ -220,6 +229,10 @@ class CRTTISerializer {
 public:
   CRTTISerializer() {
     CRTTISerializer_Constructor(this);
+  }
+
+  ~CRTTISerializer() {
+    CRTTISerializer_Deconstructor(this);
   }
 
   bool LoadScriptData(TString* name, bool validate) { return CRTTISerializer_LoadScriptData(this, name, validate); }
