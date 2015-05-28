@@ -128,17 +128,17 @@ void ReplaceFunction(const char* name, uint64_t address) {
   }
 }
 
-static void ScriptWarn(void* thisptr, void* file_context, TString* message) {
+static void ScriptWarn(void* thisptr, CScriptFileContext* file_context, TString* message) {
   std::wofstream log_file;
   log_file.open("script_compilation.log", std::ios_base::app);
-  log_file << "warn: " << message->buffer_address << std::endl;
+  log_file << "warn " << file_context->file_name.buffer_address << ":" << file_context->line_number << " " << message->buffer_address << std::endl;
   log_file.close();
 }
 
-static void ScriptError(void* thisptr, void* file_context, TString* message) {
+static void ScriptError(void* thisptr, CScriptFileContext* file_context, TString* message) {
   std::wofstream log_file;
   log_file.open("script_compilation.log", std::ios_base::app);
-  log_file << "error: " << message->buffer_address << std::endl;
+  log_file << "ERROR " << file_context->file_name.buffer_address << ":" << file_context->line_number << " " << message->buffer_address << std::endl;
   log_file.close();
 }
 
@@ -169,6 +169,11 @@ std::vector<std::wstring> GetAllFileNamesFromFolder(std::wstring folder) {
 DWORD WINAPI InitializeHook(void* arguments) {
   hook::set_base();
   HookFunction::RunAll();
+
+  std::wofstream log_file;
+  log_file.open("script_compilation.log");
+  log_file.clear();
+  log_file.close();
 
   char* location_compilation = hook::pattern("48 8D 35 ? ? ? ? 48 8D 54 24 ?").count(1).get(0).get<char>(3);
   void* compilation_messages = reinterpret_cast<void*>(location_compilation + *(int32_t*)location_compilation + 4);

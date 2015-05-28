@@ -273,3 +273,8 @@ class FileManager {
 public:
   File* CreateFileReader(TString const& name, uint64_t flag1, uint64_t flag2) { return FileManager_CreateFileReader(this, name, flag1, flag2); }
 };
+
+struct CScriptFileContext {
+  TString file_name;
+  uint32_t line_number;
+};
