@@ -50,7 +50,10 @@
     <ClInclude Include="vtable\vmthooks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="enums.h">
+    <ClInclude Include="witcher3-classes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="witcher3-enums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

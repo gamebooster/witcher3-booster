@@ -1,17 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|Win32">
-      <Configuration>Debug</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Win32">
-      <Configuration>Release</Configuration>
-      <Platform>Win32</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
@@ -155,13 +147,14 @@
     <ClCompile Include="vtable\vmthooks.cc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="enums.h" />
+    <ClInclude Include="witcher3-enums.h" />
     <ClInclude Include="hooking\HookFunction.h" />
     <ClInclude Include="hooking\Hooking.FuncCalls.h" />
     <ClInclude Include="hooking\Hooking.h" />
     <ClInclude Include="hooking\Hooking.Invoke.h" />
     <ClInclude Include="hooking\Hooking.Patterns.h" />
     <ClInclude Include="vtable\vmthooks.h" />
+    <ClInclude Include="witcher3-classes.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
