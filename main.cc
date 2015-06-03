@@ -273,7 +273,7 @@ static bool BaseEngine_InitializeScripts(void* rcx, void* rdx) {
   return OrginalBaseEngine_InitializeScripts(rcx);
 }
 
-DWORD WINAPI InitializeHook(void* arguments) {
+DWORD WINAPI InitializeHook(void* arguments) { 
   hook::set_base();
   HookFunction::RunAll();
 
