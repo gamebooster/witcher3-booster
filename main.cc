@@ -293,8 +293,7 @@ DWORD WINAPI InitializeHook(void* arguments) {
     //OrginalBaseEngine_InitializeScripts = (decltype(OrginalBaseEngine_InitializeScripts))hook::get_call(hook);
     //hook::call(hook, BaseEngine_InitializeScripts);
 
-    char* location_compilation = hook::pattern("48 8D 35 ? ? ? ? 48 8D 54 24").count(1).get(0).get<char>(3);
-    void* compilation_messages = reinterpret_cast<void*>(location_compilation + *(int32_t*)location_compilation + 4);
+    void* compilation_messages = hook::pattern("48 8D 35 ? ? ? ? 48 8D 54 24").count(1).get(0).extract<void*>(3);
 
     //location_compilation = hook::pattern("83 3D ? ? ? ? ? 74 77 E8").count(1).get(0).get<char>(2);
     //uint32_t* yydebug = reinterpret_cast<uint32_t*>(location_compilation + *(int32_t*)location_compilation + 5);
@@ -308,38 +307,20 @@ DWORD WINAPI InitializeHook(void* arguments) {
     }
   }
 
-  char* location = hook::pattern("48 8B 05 ? ? ? ? 48 8D 4C 24 ? C6 44 24").count(1).get(0).get<char>(3);
-  global_game = reinterpret_cast<CGame**>(location + *(int32_t*)location + 4);
-
-  location = hook::pattern("48 89 05 ? ? ? ? EB 07 48 89 35 ? ? ? ? 48 8B 47 60").count(1).get(0).get<char>(3);
-  global_debug_console = reinterpret_cast<void**>(location + *(int32_t*)location + 4);
+  global_game = hook::pattern("48 8B 05 ? ? ? ? 48 8D 4C 24 ? C6 44 24").count(1).get(0).extract<CGame**>(3);
+  global_debug_console = hook::pattern("48 89 05 ? ? ? ? EB 07 48 89 35 ? ? ? ? 48 8B 47 60").count(1).get(0).extract<void**>(3);
 
   while (*global_game == nullptr || *global_debug_console == nullptr) {
     Sleep(500);
   }
 
-  location = hook::pattern("48 83 EC 28 48 8B 05 ? ? ? ? 0F B6 90").count(1).get(0).get<char>(0);
-  OnViewportInputDebugConsole = (OnViewportInputType)location;
-
-  location = hook::pattern("48 8B 0D ? ? ? ? 48 8B 5C 24 ? 48 83 C4 30").count(1).get(0).get<char>(3);
-  rtti_system = *reinterpret_cast<CRTTISystem**>(location + *(int32_t*)location + 4);
-
-  //location = hook::pattern("4C 8D 0D ? ? ? ? 49 89 14 C1").count(1).get(0).get<char>(3);
-  //native_globals_function_map = reinterpret_cast<void*>(location + *(int32_t*)location + 4);
-
-  //location = hook::pattern("48 8B 0D ? ? ? ? 48 8D 55 A0 41 B8").count(1).get(0).get<char>(3);
-  //FileManager* file_manager = *reinterpret_cast<FileManager**>(location + *(int32_t*)location + 4);
+  OnViewportInputDebugConsole = hook::pattern("48 83 EC 28 48 8B 05 ? ? ? ? 0F B6 90").count(1).get(0).get<OnViewportInputType>(0);
+  rtti_system = *hook::pattern("48 8B 0D ? ? ? ? 48 8B 5C 24 ? 48 83 C4 30").count(1).get(0).extract<CRTTISystem**>(3);
+  //native_globals_function_map = hook::pattern("4C 8D 0D ? ? ? ? 49 89 14 C1").count(1).get(0).extract<void*>(3);
+  //FileManager* file_manager  = hook::pattern("48 8B 0D ? ? ? ? 48 8D 55 A0 41 B8").count(1).get(0).extract<FileManager*>(3);
 
   game_hook = new utils::VtableHook(*global_game);
   game_hook->HookMethod(OnViewportInputDebugAlwaysHook, 128);
-
-  // nops calcdatalayout as a workaround to make member functions with arguments work
-//  location = hook::pattern("E8 ? ? ? ? FF C3 48 83 C7 10 48 83 C6 08").count(1).get(0).get<char>(0);
- // hook::nop(location, 5);
-
-
-  //location = hook::pattern("E8 ? ? ? ? 66 0F 1F 44 00 ? 48 8B 7D F0").count(1).get(0).get<char>(0);
-  //hook::nop(location, 5);
 
   auto exe_path = GetExecutablePath();
   exe_path += L"\\scriptplugins\\";

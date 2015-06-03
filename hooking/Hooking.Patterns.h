@@ -25,11 +25,18 @@ namespace hook
 		}
 
 		template<typename T>
-		T* get(int offset)
+		T get(int offset)
 		{
 			char* ptr = reinterpret_cast<char*>(m_pointer);
-			return reinterpret_cast<T*>(ptr + offset);
+			return reinterpret_cast<T>(ptr + offset);
 		}
+
+    template<typename T>
+    T extract(int offset) {
+      char* address = get<char*>(offset);
+      return reinterpret_cast<T>(address + *(int32_t*)address + 4);
+    }
+
 
 		template<typename T>
 		T* get()
