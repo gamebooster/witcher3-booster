@@ -22,6 +22,7 @@ If gerald doesn't move anymore or something else doesn't work anymore you overwr
 ### RedScript
 
 Witcher 2 scripts as language reference: https://github.com/haggen/Witcher2/tree/master/base_scripts/game
+Decompiled Witcher 3 Code without Control-Flow (Sir_Kane): https://raw.githubusercontent.com/gamebooster/witcher3-booster/master/script_compilation/decompiled_w3_code_without_cfg_sir_kane.txt
 
 #### Tips
 
