@@ -19,7 +19,7 @@ import class CActor extends CGameplayEntity {
   // import var isVisibileFromFar : Bool; // 4001
   // import var voiceTag : CName; // 4003
   // import var voiceToRandomize : array<StringAnsi>; // 4001
-  // import var behTreeMachine  : *CBehTreeMachine; // 4008
+  // import var behTreeMachine  : CBehTreeMachine; // 4008
   // import var useHiResShadows : Bool; // 4009
   // import var pelvisBoneName : CName; // 4001
   // import var torsoBoneName : CName; // 4001
