@@ -14,6 +14,58 @@ class FileManager;
 class File;
 class CGame;
 
+enum  { // Sir_Kane
+  PropFlag_Editable = 0x1,
+  PropFlag_Const = 0x2,
+  PropFlag_Inlined = 0x4, //0x80
+  PropFlag_Serializable = 0x8,
+  //0x10 = ?
+  PropFlag_IsScripted = 0x20,
+  PropFlag_IsParam = 0x80,
+  PropFlag_IsLocal = 0x100,
+  PropFlag_Out = 0x200,
+  PropFlag_Optional = 0x400,
+  PropFlag_Compatible = 0x2000, //IsExported
+  PropFlag_Import = 0x4000, //Native
+  PropFlag_Saved = 0x8000,
+  PropFlag_Private = 0x10000,
+  PropFlag_Protected = 0x20000,
+  PropFlag_Public = 0x40000,
+  PropFlag_AutoBindable = 0x80000,
+  //PropFlag_IsSerializable = 0x10,// ?
+};
+
+enum  { // Sir_Kane
+  FuncFlag_Import = 0x1,
+  FuncFlag_Global = 0x2, //Should be right, only seen it on global functions
+  FuncFlag_Final = 0x10,
+  FuncFlag_Event = 0x20,
+  FuncFlag_Latent = 0x40,
+  FuncFlag_Entry = 0x80,
+  FuncFlag_Exec = 0x100,
+  FuncFlag_Timer = 0x400,
+  FuncFlag_Scene = 0x800,
+  FuncFlag_Quest = 0x1000,
+  FuncFlag_Cleanup = 0x2000,
+  FuncFlag_Private = 0x4000,
+  FuncFlag_Protected = 0x8000,
+  FuncFlag_Public = 0x10000,
+  FuncFlag_Reward = 0x20000,
+  //
+  FuncFlag_Exported = 0x8,
+};
+
+enum { // Sir_Kane
+  ClassFlag_Abstract = 0x1,
+  ClassFlag_Import = 0x2,
+  //
+  ClassFlag_Scripted = 0x4,
+  ClassFlag_Exported = 0x8,
+  ClassFlag_HasStateOwner = 0x10,
+  ClassFlag_Incomplete = 0x200,
+  ClassFlag_Statemachine = 0x400,
+};
+
 struct CNameHash {
   uint32_t name_hash;
 
@@ -90,7 +142,7 @@ struct CEnum {
   void* values; //0x0040 
   char _0x0048[56];
   DWORD flags; //0x0080 
-  BYTE unknown; //0x0084 
+  bool source_script; //0x0084 
   char _0x0085[3];
 
   bool FindName(int index, CName& name) { return CEnum_FindName(this, index, name); }
@@ -103,6 +155,9 @@ struct CClass {
 
   uint64_t unknown;
   CClass* parent;
+  char _0x0018[24];
+  uint64_t* property_array;
+  uint32_t property_count;//0x0038 
 };
 
 struct CProperty {
@@ -112,7 +167,7 @@ struct CProperty {
   char _0x0014[4];
   uint64_t N23BE7CFD; //0x0018 
   uint32_t N23BE7CFE; //0x0020 
-  uint32_t optional; //0x0024 
+  uint32_t flags; //0x0024 
   uint64_t N23BE7CFF; //0x0028 
 };
 
@@ -173,9 +228,9 @@ public:
   }
 };
 
-static hook::thiscall_stub<void(CGame*, bool toggle)> CGame_EnableFreeCamera([]() {
-  return hook::pattern("40 53 48 83 EC 40 48 8B D9 E8 ? ? ? ? 80 BB ? ? ? ? ?").count(1).get(0).get<void>(0);
-});
+//static hook::thiscall_stub<void(CGame*, bool toggle)> CGame_EnableFreeCamera([]() {
+//  return hook::pattern("40 53 48 83 EC 40 48 8B D9 E8 ? ? ? ? 80 BB ? ? ? ? ?").count(1).get(0).get<void>(0);
+//});
 
 static hook::thiscall_stub<bool(CGame*, EInputKey, EInputAction, float)> CGame_ProcessFreeCameraInput([]() {
   return hook::pattern("48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 40 80 3D").count(1).get(0).get<void>(0);
@@ -183,7 +238,7 @@ static hook::thiscall_stub<bool(CGame*, EInputKey, EInputAction, float)> CGame_P
 
 class CGame {
 public:
-  void EnableFreeCamera(bool toggle) { CGame_EnableFreeCamera(this, toggle); }
+  //void EnableFreeCamera(bool toggle) { CGame_EnableFreeCamera(this, toggle); }
   bool ProcessFreeCameraInput(EInputKey key, EInputAction action, float tick) { return CGame_ProcessFreeCameraInput(this, key, action, tick); }
 };
 
@@ -220,9 +275,9 @@ static hook::thiscall_stub<bool(CRTTISerializer*, TString*, bool)> CRTTISerializ
   return hook::pattern("48 89 5C 24 ? 48 89 74 24 ? 48 89 7C 24 ? 4C 89 74 24 ? 55 48 8B EC 48 81 EC ? ? ? ? 48 8B F1").count(1).get(0).get<void>(0);
 });
 
-static hook::thiscall_stub<bool(CRTTISerializer*, File*)> CRTTISerializer_LoadScriptDataFromFile([]() {
-  return hook::pattern("40 53 55 56 57 41 54 41 57 48 83 EC 68").count(1).get(0).get<void>(0);
-});
+//static hook::thiscall_stub<bool(CRTTISerializer*, File*)> CRTTISerializer_LoadScriptDataFromFile([]() {
+//  return hook::pattern("40 53 55 56 57 41 54 41 57 48 83 EC 68").count(1).get(0).get<void>(0);
+//});
 
 class CRTTISerializer {
   char _0x00[1000];
@@ -236,43 +291,43 @@ public:
   }
 
   bool LoadScriptData(TString* name, bool validate) { return CRTTISerializer_LoadScriptData(this, name, validate); }
-  bool LoadScriptDataFromFile(File* file) { return CRTTISerializer_LoadScriptDataFromFile(this, file); }
+  //bool LoadScriptDataFromFile(File* file) { return CRTTISerializer_LoadScriptDataFromFile(this, file); }
 };
 
-class CScriptsSerializer;
+//class CScriptsSerializer;
+//
+//static hook::thiscall_stub<void(CScriptsSerializer*)> CScriptsSerializer_Constructor([]() {
+//  return hook::pattern("48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 30 33 F6 48 8B D9 48 83 C1 18 48 89 71 E8 48 89 71 F0 48 89 71 F8 E8 ? ? ? ? 48 89 73 30 40 88 73 38 39 73 10 74 32 48 8B 05 ? ? ? ? 48 8B 7B 18").count(1).get(0).get<void>(0);
+//});
+//
+//static hook::thiscall_stub<bool(CScriptsSerializer*, TString*)> CScriptsSerializer_LoadScript([]() {
+//  return hook::pattern("48 89 5C 24 ? 57 48 83 EC 70 48 8B F9 48 8B 0D ? ? ? ? 33 DB").count(1).get(0).get<void>(0);
+//});
+//
+//static hook::thiscall_stub<bool(CScriptsSerializer*, void*)> CScriptsSerializer_LoadScriptFile([]() {
+//  return hook::pattern("40 53 55 56 57 41 54 41 55 41 56 41 57 48 83 EC 58 48 8B 02").count(1).get(0).get<void>(0);
+//});
+//
+//class CScriptsSerializer {
+//  char _0x00[1000];
+//public:
+//  CScriptsSerializer() {
+//    CScriptsSerializer_Constructor(this);
+//  }
+//
+//  bool LoadScriptDataFromFile(TString* name) { return CScriptsSerializer_LoadScript(this, name); }
+//  bool LoadScriptFile(void* file) { return CScriptsSerializer_LoadScriptFile(this, file); }
+//};
+//
+//static hook::thiscall_stub<File*(FileManager*, TString const& name, uint64_t, uint64_t)> FileManager_CreateFileReader([]() {
+//  char* location = hook::pattern("E8 ? ? ? ? 48 8B F8 48 85 C0 74 32 4C 8B C6").count(1).get(0).get<char>(1);
+//  return reinterpret_cast<void*>(location + *(int32_t*)location + 4);
+//});
 
-static hook::thiscall_stub<void(CScriptsSerializer*)> CScriptsSerializer_Constructor([]() {
-  return hook::pattern("48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 30 33 F6 48 8B D9 48 83 C1 18 48 89 71 E8 48 89 71 F0 48 89 71 F8 E8 ? ? ? ? 48 89 73 30 40 88 73 38 39 73 10 74 32 48 8B 05 ? ? ? ? 48 8B 7B 18").count(1).get(0).get<void>(0);
-});
-
-static hook::thiscall_stub<bool(CScriptsSerializer*, TString*)> CScriptsSerializer_LoadScript([]() {
-  return hook::pattern("48 89 5C 24 ? 57 48 83 EC 70 48 8B F9 48 8B 0D ? ? ? ? 33 DB").count(1).get(0).get<void>(0);
-});
-
-static hook::thiscall_stub<bool(CScriptsSerializer*, void*)> CScriptsSerializer_LoadScriptFile([]() {
-  return hook::pattern("40 53 55 56 57 41 54 41 55 41 56 41 57 48 83 EC 58 48 8B 02").count(1).get(0).get<void>(0);
-});
-
-class CScriptsSerializer {
-  char _0x00[1000];
-public:
-  CScriptsSerializer() {
-    CScriptsSerializer_Constructor(this);
-  }
-
-  bool LoadScriptDataFromFile(TString* name) { return CScriptsSerializer_LoadScript(this, name); }
-  bool LoadScriptFile(void* file) { return CScriptsSerializer_LoadScriptFile(this, file); }
-};
-
-static hook::thiscall_stub<File*(FileManager*, TString const& name, uint64_t, uint64_t)> FileManager_CreateFileReader([]() {
-  char* location = hook::pattern("E8 ? ? ? ? 48 8B F8 48 85 C0 74 32 4C 8B C6").count(1).get(0).get<char>(1);
-  return reinterpret_cast<void*>(location + *(int32_t*)location + 4);
-});
-
-class FileManager {
-public:
-  File* CreateFileReader(TString const& name, uint64_t flag1, uint64_t flag2) { return FileManager_CreateFileReader(this, name, flag1, flag2); }
-};
+//class FileManager {
+//public:
+//  File* CreateFileReader(TString const& name, uint64_t flag1, uint64_t flag2) { return FileManager_CreateFileReader(this, name, flag1, flag2); }
+//};
 
 struct CScriptFileContext {
   TString file_name;

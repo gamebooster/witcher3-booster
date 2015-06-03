@@ -562,30 +562,30 @@ public:
 };
 #pragma endregion
 #else
-void* AllocateFunctionStub(void* ptr, int type = 0);
+void* AllocateFunctionStub(void* origin, void* ptr, int type = 0);
 
 template<typename T, typename AT>
 inline void jump(AT address, T func)
 {
-	LPVOID funcStub = AllocateFunctionStub((void*)func);
+  LPVOID funcStub = AllocateFunctionStub((void*)address, (void*)func);
 
-	put<uint8_t>(address, 0xE9);
-	put<int>((uintptr_t)address + 1, (intptr_t)funcStub- (intptr_t)get_adjusted(address) - 5);
+	putVP<uint8_t>(address, 0xE9);
+	putVP<int>((uintptr_t)address + 1, (intptr_t)funcStub- (intptr_t)get_adjusted(address) - 5);
 }
 
 template<typename T, typename AT>
 inline void call(AT address, T func)
 {
-	LPVOID funcStub = AllocateFunctionStub((void*)func);
+	LPVOID funcStub = AllocateFunctionStub((void*)address, (void*)func);
 
-	put<uint8_t>(address, 0xE8);
-	put<int>((uintptr_t)address + 1, (intptr_t)funcStub - (intptr_t)get_adjusted(address) - 5);
+  putVP<uint8_t>(address, 0xE8);
+  putVP<int>((uintptr_t)address + 1, (intptr_t)funcStub - (intptr_t)get_adjusted(address) - 5);
 }
 
 template<typename T, typename AT>
 inline void call_rcx(AT address, T func)
 {
-	LPVOID funcStub = AllocateFunctionStub((void*)func, 1);
+	LPVOID funcStub = AllocateFunctionStub((void*)address, (void*)func, 1);
 
 	put<uint8_t>(address, 0xE8);
 	put<int>((uintptr_t)address + 1, (intptr_t)funcStub - (intptr_t)get_adjusted(address) - 5);

@@ -76,7 +76,7 @@ namespace hook
 			if (m_matches.size() != expected) {
 				std::stringstream message;
 				message << m_matches.size() << " != " << expected << " " << m_bytes;
-				MessageBoxA(NULL, message.str().c_str(), "MatchesCountError", MB_OK | MB_ICONEXCLAMATION);
+        MessageBoxA(NULL, message.str().c_str(), "MatchesCountError", MB_OK | MB_ICONEXCLAMATION);
 			};
 
 			return *this;
