@@ -26,4 +26,4 @@ Witcher 2 scripts as language reference: https://github.com/haggen/Witcher2/tree
 #### Tips
 
 * name (CName) `'pig'`
-* string `"Blabla bla"`
+* Put `start /W witcher3.exe -dumpscripts && COPY /Y ..\..\content\content0\x64.final.redscripts scriptplugins\myplugin.redscriptsplugin` into  `compile.bat` in `The Witcher 3 Wild Hunt\bin\x64`
