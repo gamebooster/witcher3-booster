@@ -7,7 +7,7 @@ enum EInputAction {
   IACT_Axis = 3
 };
 
-enum EInputKey { // 261
+enum EInputKey {  // 261
   IK_None = 0,
   IK_LeftMouse = 1,
   IK_RightMouse = 2,

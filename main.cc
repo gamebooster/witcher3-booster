@@ -14,7 +14,7 @@ CRTTISystem* rtti_system = nullptr;
 void* native_globals_function_map = nullptr;
 CGame** global_game = nullptr;
 
-//void DumpEnums() {
+// void DumpEnums() {
 //  std::wofstream log_file;
 //  log_file.open("global_enums_log.txt");
 //
@@ -28,7 +28,9 @@ CGame** global_game = nullptr;
 //    auto enum_ = *(CEnum**)(enums.base_pointer + i);
 //    if (!enum_) continue; //|| !enum_->source_script) continue;
 //
-//    log_file << "enum " << enum_->name.AsChar() << " // " << std::dec << enum_->names_count << " " << std::dec << enum_->flags << " " << enum_->source_script << std::endl;
+//    log_file << "enum " << enum_->name.AsChar() << " // " << std::dec <<
+//    enum_->names_count << " " << std::dec << enum_->flags << " " <<
+//    enum_->source_script << std::endl;
 //    log_file << "{" << std::endl;
 //    for (size_t i = 0; i < enum_->names_count; i++) {
 //      CName name;
@@ -36,7 +38,8 @@ CGame** global_game = nullptr;
 //      if (name.pool_index) {
 //        int value;
 //        enum_->FindValue(name, value);
-//        log_file << " " << name.AsChar() << " = " << value << "," << std::endl;
+//        log_file << " " << name.AsChar() << " = " << value << "," <<
+//        std::endl;
 //      }
 //    }
 //    log_file << std::endl << "}" << std::endl;
@@ -45,7 +48,7 @@ CGame** global_game = nullptr;
 //  log_file.close();
 //}
 //
-//std::wostream& operator<<(std::wostream& stream, const wchar_t* string) {
+// std::wostream& operator<<(std::wostream& stream, const wchar_t* string) {
 //  if (string == nullptr) return stream;
 //
 //  std::wstring test(string);
@@ -62,7 +65,8 @@ CGame** global_game = nullptr;
 //
 //  pos = test.find(L"array:2,0,array:2,0,");
 //  if (pos != -1) {
-//    test.replace(pos, std::wstring(L"array:2,0,array:2,0,").length(), L"C2dArray");
+//    test.replace(pos, std::wstring(L"array:2,0,array:2,0,").length(),
+//    L"C2dArray");
 //  }
 //
 //  pos = test.find(L"array:2,0,");
@@ -75,7 +79,7 @@ CGame** global_game = nullptr;
 //  return stream;
 //}
 //
-//void DumpGlobalFunctions() {
+// void DumpGlobalFunctions() {
 //  std::wofstream log_file;
 //  log_file.open("global_functions_log.txt");
 //
@@ -188,58 +192,77 @@ CGame** global_game = nullptr;
 //  log_file.close();
 //}
 //
-typedef bool(*OnViewportInputType) (void* thisptr, void* viewport, EInputKey input_key, EInputAction input_action, float tick);
+typedef bool (*OnViewportInputType)(void* thisptr,
+                                    void* viewport,
+                                    EInputKey input_key,
+                                    EInputAction input_action,
+                                    float tick);
 OnViewportInputType OnViewportInputDebugConsole = nullptr;
 
-bool OnViewportInputDebugAlwaysHook(void* thisptr, void* viewport, EInputKey input_key, EInputAction input_action, float tick) {
-  if ((*global_game)->ProcessFreeCameraInput(input_key, input_action, tick)) return true;
+bool OnViewportInputDebugAlwaysHook(void* thisptr,
+                                    void* viewport,
+                                    EInputKey input_key,
+                                    EInputAction input_action,
+                                    float tick) {
+  if ((*global_game)->ProcessFreeCameraInput(input_key, input_action, tick))
+    return true;
 
   if (input_key == IK_F2 && input_action == IACT_Release) {
     input_key = IK_Tilde;
     input_action = IACT_Press;
   }
 
-  return OnViewportInputDebugConsole(*global_debug_console, viewport, input_key, input_action, tick);
+  return OnViewportInputDebugConsole(*global_debug_console, viewport, input_key,
+                                     input_action, tick);
 }
 //
-//void funcLogHook(struct CObject *a1, struct CScriptStackFrame *a2, void *a3) {
+// void funcLogHook(struct CObject *a1, struct CScriptStackFrame *a2, void *a3)
+// {
 //  OutputDebugStringW(L"test log");
 //}
 //
-//uint64_t* GetFunctionAddress(CFunction* function) {
-//  return (uint64_t*)((uint64_t)native_globals_function_map + (8 * function->registration_offset));
+// uint64_t* GetFunctionAddress(CFunction* function) {
+//  return (uint64_t*)((uint64_t)native_globals_function_map + (8 *
+//  function->registration_offset));
 //}
 //
-//void ReplaceFunction(const char* name, uint64_t address) {
+// void ReplaceFunction(const char* name, uint64_t address) {
 //  auto function = rtti_system->FindGlobalFunction(CName(name));
 //
 //  if (function) {
 //    auto function_address = GetFunctionAddress(function);
 //
 //    std::wstringstream message;
-//    message << "ReplaceFunction: " << name << " " << std::hex << function << " " << " " << std::hex << function_address;
+//    message << "ReplaceFunction: " << name << " " << std::hex << function << "
+//    " << " " << std::hex << function_address;
 //    OutputDebugStringW(message.str().c_str());
 //
 //    *function_address = address;
 //  }
 //}
 //
-//static void ScriptWarn(void* thisptr, CScriptFileContext* file_context, TString* message) {
+// static void ScriptWarn(void* thisptr, CScriptFileContext* file_context,
+// TString* message) {
 //  std::wofstream log_file;
 //  log_file.open("script_compilation.log", std::ios_base::app);
-//  log_file << "warn " << file_context->file_name.buffer_address << ":" << file_context->line_number << " " << message->buffer_address << std::endl;
+//  log_file << "warn " << file_context->file_name.buffer_address << ":" <<
+//  file_context->line_number << " " << message->buffer_address << std::endl;
 //  log_file.close();
 //
-//  std::wcout << "warn " << file_context->file_name.buffer_address << ":" << file_context->line_number << " " << message->buffer_address << std::endl;
+//  std::wcout << "warn " << file_context->file_name.buffer_address << ":" <<
+//  file_context->line_number << " " << message->buffer_address << std::endl;
 //}
 //
-//static void ScriptError(void* thisptr, CScriptFileContext* file_context, TString* message) {
+// static void ScriptError(void* thisptr, CScriptFileContext* file_context,
+// TString* message) {
 //  std::wofstream log_file;
 //  log_file.open("script_compilation.log", std::ios_base::app);
-//  log_file << "ERROR " << file_context->file_name.buffer_address << ":" << file_context->line_number << " " << message->buffer_address << std::endl;
+//  log_file << "ERROR " << file_context->file_name.buffer_address << ":" <<
+//  file_context->line_number << " " << message->buffer_address << std::endl;
 //  log_file.close();
 //
-//  std::wcerr << "ERROR " << file_context->file_name.buffer_address << ":" << file_context->line_number << " " << message->buffer_address << std::endl;
+//  std::wcerr << "ERROR " << file_context->file_name.buffer_address << ":" <<
+//  file_context->line_number << " " << message->buffer_address << std::endl;
 //}
 
 std::wstring GetExecutablePath() {
@@ -266,46 +289,62 @@ std::vector<std::wstring> GetAllFileNamesFromFolder(std::wstring folder) {
   return names;
 }
 
-static bool (__thiscall *OrginalBaseEngine_InitializeScripts)(void*);
+static bool(__thiscall* OrginalBaseEngine_InitializeScripts)(void*);
 
 static bool BaseEngine_InitializeScripts(void* rcx, void* rdx) {
   std::wcout << "BaseEngine_InitializeScripts" << std::endl;
 
-  //CRTTISerializer serializer;
-  //TString path(L"cookedfinal.redscripts");
+  // CRTTISerializer serializer;
+  // TString path(L"cookedfinal.redscripts");
 
-  //if (serializer.LoadScriptData(&path, false)) {
+  // if (serializer.LoadScriptData(&path, false)) {
   //  std::wcout << L"Loaded scriptplugin: cookedfinal.redscripts" << std::endl;
   //};
 
   return OrginalBaseEngine_InitializeScripts(rcx);
 }
 
-DWORD WINAPI InitializeHook(void* arguments) { 
+DWORD WINAPI InitializeHook(void* arguments) {
   hook::set_base();
   HookFunction::RunAll();
 
-  global_game = hook::pattern("48 8B 05 ? ? ? ? 48 8D 4C 24 ? C6 44 24").count(1).get(0).extract<CGame**>(3);
-  global_debug_console = hook::pattern("48 89 05 ? ? ? ? EB 07 48 89 35 ? ? ? ? 48 8B 97").count(1).get(0).extract<void**>(3);
+  global_game = hook::pattern("48 8B 05 ? ? ? ? 48 8D 4C 24 ? C6 44 24")
+                    .count(1)
+                    .get(0)
+                    .extract<CGame**>(3);
+  global_debug_console =
+      hook::pattern("48 89 05 ? ? ? ? EB 07 48 89 35 ? ? ? ? 48 8B 97")
+          .count(1)
+          .get(0)
+          .extract<void**>(3);
 
   while (*global_game == nullptr || *global_debug_console == nullptr) {
     Sleep(500);
   }
 
-  OnViewportInputDebugConsole = hook::pattern("48 83 EC 28 48 8B 05 ? ? ? ? 0F B6 90").count(1).get(0).get<OnViewportInputType>(0);
-  rtti_system = *hook::pattern("48 8B 0D ? ? ? ? 48 8B 5C 24 ? 48 83 C4 30").count(1).get(0).extract<CRTTISystem**>(3);
-  //native_globals_function_map = hook::pattern("4C 8D 0D ? ? ? ? 49 89 14 C1").count(1).get(0).extract<void*>(3);
-  //FileManager* file_manager  = hook::pattern("48 8B 0D ? ? ? ? 48 8D 55 A0 41 B8").count(1).get(0).extract<FileManager*>(3);
+  OnViewportInputDebugConsole =
+      hook::pattern("48 83 EC 28 48 8B 05 ? ? ? ? 0F B6 90")
+          .count(1)
+          .get(0)
+          .get<OnViewportInputType>(0);
+  rtti_system = *hook::pattern("48 8B 0D ? ? ? ? 48 8B 5C 24 ? 48 83 C4 30")
+                     .count(1)
+                     .get(0)
+                     .extract<CRTTISystem**>(3);
+  // native_globals_function_map = hook::pattern("4C 8D 0D ? ? ? ? 49 89 14
+  // C1").count(1).get(0).extract<void*>(3);
+  // FileManager* file_manager  = hook::pattern("48 8B 0D ? ? ? ? 48 8D 55 A0 41
+  // B8").count(1).get(0).extract<FileManager*>(3);
 
   game_hook = new utils::VtableHook(*global_game);
   game_hook->HookMethod(OnViewportInputDebugAlwaysHook, 133);
 
-  //auto exe_path = GetExecutablePath();
-  //exe_path += L"\\scriptplugins\\";
+  // auto exe_path = GetExecutablePath();
+  // exe_path += L"\\scriptplugins\\";
 
-  //auto plugin_names = GetAllFileNamesFromFolder(exe_path);
+  // auto plugin_names = GetAllFileNamesFromFolder(exe_path);
 
-  //for (auto name : plugin_names) {
+  // for (auto name : plugin_names) {
   //  if (name.find(L".redscriptsplugin") == std::string::npos) continue;
 
   //  auto full_path = (L"..\\..\\bin\\x64\\scriptplugins\\" + name);
@@ -317,27 +356,27 @@ DWORD WINAPI InitializeHook(void* arguments) {
   //  };
   //}
 
-  //DumpGlobalFunctions();
+  // DumpGlobalFunctions();
 
-  //DumpEnums();
+  // DumpEnums();
 
-  //ReplaceFunction("Log", (uint64_t)&funcLogHook);
-  //ReplaceFunction("LogChannel", (uint64_t)&funcLogHook);
-  //ReplaceFunction("Trace", (uint64_t)&funcLogHook);
-  //ReplaceFunction("DebugBreak", (uint64_t)&funcLogHook);
+  // ReplaceFunction("Log", (uint64_t)&funcLogHook);
+  // ReplaceFunction("LogChannel", (uint64_t)&funcLogHook);
+  // ReplaceFunction("Trace", (uint64_t)&funcLogHook);
+  // ReplaceFunction("DebugBreak", (uint64_t)&funcLogHook);
 
   return 1;
 }
 
 void FinalizeHook() {
-  if (game_hook) delete game_hook;
+  if (game_hook)
+    delete game_hook;
 }
 
 int WINAPI DllMain(HINSTANCE instance, DWORD reason, PVOID reserved) {
   if (reason == DLL_PROCESS_ATTACH) {
     thread = CreateThread(nullptr, 0, InitializeHook, 0, 0, nullptr);
-  }
-  else if (reason == DLL_PROCESS_DETACH) {
+  } else if (reason == DLL_PROCESS_DETACH) {
     FinalizeHook();
     WaitForSingleObject(thread, INFINITE);
     CloseHandle(thread);

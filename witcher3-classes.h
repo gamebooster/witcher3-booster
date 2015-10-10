@@ -26,7 +26,7 @@ enum {  // Sir_Kane
   PropFlag_Out = 0x200,
   PropFlag_Optional = 0x400,
   PropFlag_Compatible = 0x2000,  // IsExported
-  PropFlag_Import = 0x4000,  // Native
+  PropFlag_Import = 0x4000,      // Native
   PropFlag_Saved = 0x8000,
   PropFlag_Private = 0x10000,
   PropFlag_Protected = 0x20000,
