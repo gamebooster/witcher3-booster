@@ -14,172 +14,180 @@ CRTTISystem* rtti_system = nullptr;
 void* native_globals_function_map = nullptr;
 CGame** global_game = nullptr;
 
-void DumpEnums() {
-  std::wofstream log_file;
-  log_file.open("global_enums_log.txt");
-
-  TDynArray enums;
-  enums.base_pointer = &enums.begin;
-  enums.count = 0;
-  enums.max = 0;
-  rtti_system->EnumEnums(enums);
-
-  for (size_t i = 0; i < enums.count; i++) {
-    auto enum_ = *(CEnum**)(enums.base_pointer + i);
-    if (!enum_) continue; //|| !enum_->source_script) continue;
-
-    log_file << "enum " << enum_->name.AsChar() << " // " << std::dec << enum_->names_count << " " << std::dec << enum_->flags << " " << enum_->source_script << std::endl;
-    log_file << "{" << std::endl;
-    for (size_t i = 0; i < enum_->names_count; i++) {
-      CName name;
-      enum_->FindName(i, name);
-      if (name.pool_index) {
-        int value;
-        enum_->FindValue(name, value);
-        log_file << " " << name.AsChar() << " = " << value << "," << std::endl;
-      }
-    }
-    log_file << std::endl << "}" << std::endl;
-  }
-
-  log_file.close();
-}
-
-std::wostream& operator<<(std::wostream& stream, const wchar_t* string) {
-  if (string == nullptr) return stream;
-
-  std::wstring test(string);
-
-  size_t pos = test.find(L"handle:");
-  if (pos != -1) {
-    test.replace(pos, std::wstring(L"handle:").length(), L"");
-  }
-
-  pos = test.find(L"ptr:");
-  if (pos != -1) {
-    test.replace(pos, std::wstring(L"ptr:").length(), L"*");
-  }
-
-  pos = test.find(L"array:2,0,array:2,0,");
-  if (pos != -1) {
-    test.replace(pos, std::wstring(L"array:2,0,array:2,0,").length(), L"C2dArray");
-  }
-
-  pos = test.find(L"array:2,0,");
-  if (pos != -1) {
-    test.replace(pos, std::wstring(L"array:2,0,").length(), L"array<");
-    test += L">";
-  }
-
-  stream << test;
-  return stream;
-}
-
-void DumpGlobalFunctions() {
-  std::wofstream log_file;
-  log_file.open("global_functions_log.txt");
-
-  TDynArray functions;
-  functions.base_pointer = &functions.begin;
-  functions.count = 0;
-  functions.max = 0;
-  rtti_system->EnumFunctions(functions);
-
-  CName* last_class = nullptr;
-
-  for (size_t i = 0; i < functions.count; i++) {
-    auto function = *(CFunction**)(functions.base_pointer + i);
-    if (!function) continue; // || !(function->flags & (1 << 8))) continue;
-
-    if (last_class && (!function->parent_class || (function->parent_class->GetName().pool_index != last_class->pool_index))) {
-      log_file << std::endl << "}" << std::endl;
-      last_class = nullptr;
-    }
-
-    if (function->parent_class && !last_class) {
-      last_class = &function->parent_class->GetName();
-      log_file << "import class " << last_class->AsChar();
-      if (function->parent_class->parent) {
-        log_file << " extends " << function->parent_class->parent->GetName().AsChar();
-      }
-      log_file << " {" << std::endl;
-
-      for (size_t i = 0; i < function->parent_class->property_count; i++) {
-        auto property = (CProperty*)function->parent_class->property_array[i];
-        //if (!(property->flags & PropFlag_Compatible)) continue;
-        if (!(property->flags & PropFlag_Import)) continue;
-
-        log_file << "  import var " << property->name.AsChar() << " : " << property->class_type->GetName().AsChar() << ";" << " // " << property->flags << std::endl;
-      }
-      log_file << std::endl;
-
-    }
-
-    if (function->parent_class) log_file << "  ";
-
-    if (function->flags & FuncFlag_Exported) {
-      log_file << "import ";
-    }
-
-    if (function->flags & FuncFlag_Public) {
-      log_file << "public ";
-    }
-
-    if (function->flags & FuncFlag_Private) {
-      log_file << "private ";
-    }
-
-    if (function->flags & FuncFlag_Protected) {
-      log_file << "protected ";
-    }
-
-    if (function->flags & FuncFlag_Event) {
-      log_file << "event ";
-    }
-
-    if (function->flags & FuncFlag_Latent) {
-      log_file << "latent ";
-    }
-
-    if (function->flags & FuncFlag_Cleanup) {
-      log_file << "cleanup ";
-    }
-
-    if (function->flags & FuncFlag_Final) {
-      log_file << "final ";
-    }
-
-    log_file << "function " << function->name.AsChar() << "(";
-    for (size_t i = 0; i < function->argument_count; i++) {
-      auto property = (CProperty*)function->property_array[i];
-
-      if (property->flags & PropFlag_Optional) {
-        log_file << " optional ";
-      }
-
-      if (property->flags & PropFlag_Out) {
-        log_file << " out ";
-      }
-
-      log_file  << " " << property->name.AsChar() << " : " << property->class_type->GetName().AsChar();
-      if (i + 1 != function->argument_count)
-      {
-        log_file << ", ";
-      } else {
-      }
-    }
-    log_file << ")";
-    if (function->return_type) {
-      log_file << " : " << function->return_type->class_type->GetName().AsChar();
-    }
-    log_file << "; " << " // flags: " << std::dec << function->flags << " "<< std::hex << function << std::endl;
-  }
-
-
-
-  log_file.close();
-}
-
+//void DumpEnums() {
+//  std::wofstream log_file;
+//  log_file.open("global_enums_log.txt");
+//
+//  TDynArray enums;
+//  enums.base_pointer = &enums.begin;
+//  enums.count = 0;
+//  enums.max = 0;
+//  rtti_system->EnumEnums(enums);
+//
+//  for (size_t i = 0; i < enums.count; i++) {
+//    auto enum_ = *(CEnum**)(enums.base_pointer + i);
+//    if (!enum_) continue; //|| !enum_->source_script) continue;
+//
+//    log_file << "enum " << enum_->name.AsChar() << " // " << std::dec << enum_->names_count << " " << std::dec << enum_->flags << " " << enum_->source_script << std::endl;
+//    log_file << "{" << std::endl;
+//    for (size_t i = 0; i < enum_->names_count; i++) {
+//      CName name;
+//      enum_->FindName(i, name);
+//      if (name.pool_index) {
+//        int value;
+//        enum_->FindValue(name, value);
+//        log_file << " " << name.AsChar() << " = " << value << "," << std::endl;
+//      }
+//    }
+//    log_file << std::endl << "}" << std::endl;
+//  }
+//
+//  log_file.close();
+//}
+//
+//std::wostream& operator<<(std::wostream& stream, const wchar_t* string) {
+//  if (string == nullptr) return stream;
+//
+//  std::wstring test(string);
+//
+//  size_t pos = test.find(L"handle:");
+//  if (pos != -1) {
+//    test.replace(pos, std::wstring(L"handle:").length(), L"");
+//  }
+//
+//  pos = test.find(L"ptr:");
+//  if (pos != -1) {
+//    test.replace(pos, std::wstring(L"ptr:").length(), L"*");
+//  }
+//
+//  pos = test.find(L"array:2,0,array:2,0,");
+//  if (pos != -1) {
+//    test.replace(pos, std::wstring(L"array:2,0,array:2,0,").length(), L"C2dArray");
+//  }
+//
+//  pos = test.find(L"array:2,0,");
+//  if (pos != -1) {
+//    test.replace(pos, std::wstring(L"array:2,0,").length(), L"array<");
+//    test += L">";
+//  }
+//
+//  stream << test;
+//  return stream;
+//}
+//
+//void DumpGlobalFunctions() {
+//  std::wofstream log_file;
+//  log_file.open("global_functions_log.txt");
+//
+//  TDynArray functions;
+//  functions.base_pointer = &functions.begin;
+//  functions.count = 0;
+//  functions.max = 0;
+//  rtti_system->EnumFunctions(functions);
+//
+//  CName* last_class = nullptr;
+//
+//  for (size_t i = 0; i < functions.count; i++) {
+//    auto function = *(CFunction**)(functions.base_pointer + i);
+//    if (!function) continue; // || !(function->flags & (1 << 8))) continue;
+//
+//    if (last_class && (!function->parent_class ||
+//    (function->parent_class->GetName().pool_index != last_class->pool_index)))
+//    {
+//      log_file << std::endl << "}" << std::endl;
+//      last_class = nullptr;
+//    }
+//
+//    if (function->parent_class && !last_class) {
+//      last_class = &function->parent_class->GetName();
+//      log_file << "import class " << last_class->AsChar();
+//      if (function->parent_class->parent) {
+//        log_file << " extends " <<
+//        function->parent_class->parent->GetName().AsChar();
+//      }
+//      log_file << " {" << std::endl;
+//
+//      for (size_t i = 0; i < function->parent_class->property_count; i++) {
+//        auto property = (CProperty*)function->parent_class->property_array[i];
+//        //if (!(property->flags & PropFlag_Compatible)) continue;
+//        if (!(property->flags & PropFlag_Import)) continue;
+//
+//        log_file << "  import var " << property->name.AsChar() << " : " <<
+//        property->class_type->GetName().AsChar() << ";" << " // " <<
+//        property->flags << std::endl;
+//      }
+//      log_file << std::endl;
+//
+//    }
+//
+//    if (function->parent_class) log_file << "  ";
+//
+//    if (function->flags & FuncFlag_Exported) {
+//      log_file << "import ";
+//    }
+//
+//    if (function->flags & FuncFlag_Public) {
+//      log_file << "public ";
+//    }
+//
+//    if (function->flags & FuncFlag_Private) {
+//      log_file << "private ";
+//    }
+//
+//    if (function->flags & FuncFlag_Protected) {
+//      log_file << "protected ";
+//    }
+//
+//    if (function->flags & FuncFlag_Event) {
+//      log_file << "event ";
+//    }
+//
+//    if (function->flags & FuncFlag_Latent) {
+//      log_file << "latent ";
+//    }
+//
+//    if (function->flags & FuncFlag_Cleanup) {
+//      log_file << "cleanup ";
+//    }
+//
+//    if (function->flags & FuncFlag_Final) {
+//      log_file << "final ";
+//    }
+//
+//    log_file << "function " << function->name.AsChar() << "(";
+//    for (size_t i = 0; i < function->argument_count; i++) {
+//      auto property = (CProperty*)function->property_array[i];
+//
+//      if (property->flags & PropFlag_Optional) {
+//        log_file << " optional ";
+//      }
+//
+//      if (property->flags & PropFlag_Out) {
+//        log_file << " out ";
+//      }
+//
+//      log_file  << " " << property->name.AsChar() << " : " <<
+//      property->class_type->GetName().AsChar();
+//      if (i + 1 != function->argument_count)
+//      {
+//        log_file << ", ";
+//      } else {
+//      }
+//    }
+//    log_file << ")";
+//    if (function->return_type) {
+//      log_file << " : " <<
+//      function->return_type->class_type->GetName().AsChar();
+//    }
+//    log_file << "; " << " // flags: " << std::dec << function->flags << " "<<
+//    std::hex << function << std::endl;
+//  }
+//
+//
+//
+//  log_file.close();
+//}
+//
 typedef bool(*OnViewportInputType) (void* thisptr, void* viewport, EInputKey input_key, EInputAction input_action, float tick);
 OnViewportInputType OnViewportInputDebugConsole = nullptr;
 
@@ -193,46 +201,46 @@ bool OnViewportInputDebugAlwaysHook(void* thisptr, void* viewport, EInputKey inp
 
   return OnViewportInputDebugConsole(*global_debug_console, viewport, input_key, input_action, tick);
 }
-
-void funcLogHook(struct CObject *a1, struct CScriptStackFrame *a2, void *a3) {
-  OutputDebugStringW(L"test log");
-}
-
-uint64_t* GetFunctionAddress(CFunction* function) {
-  return (uint64_t*)((uint64_t)native_globals_function_map + (8 * function->registration_offset));
-}
-
-void ReplaceFunction(const char* name, uint64_t address) {
-  auto function = rtti_system->FindGlobalFunction(CName(name));
-
-  if (function) {
-    auto function_address = GetFunctionAddress(function);
-
-    std::wstringstream message;
-    message << "ReplaceFunction: " << name << " " << std::hex << function << " " << " " << std::hex << function_address;
-    OutputDebugStringW(message.str().c_str());
-
-    *function_address = address;
-  }
-}
-
-static void ScriptWarn(void* thisptr, CScriptFileContext* file_context, TString* message) {
-  std::wofstream log_file;
-  log_file.open("script_compilation.log", std::ios_base::app);
-  log_file << "warn " << file_context->file_name.buffer_address << ":" << file_context->line_number << " " << message->buffer_address << std::endl;
-  log_file.close();
-
-  std::wcout << "warn " << file_context->file_name.buffer_address << ":" << file_context->line_number << " " << message->buffer_address << std::endl;
-}
-
-static void ScriptError(void* thisptr, CScriptFileContext* file_context, TString* message) {
-  std::wofstream log_file;
-  log_file.open("script_compilation.log", std::ios_base::app);
-  log_file << "ERROR " << file_context->file_name.buffer_address << ":" << file_context->line_number << " " << message->buffer_address << std::endl;
-  log_file.close();
-
-  std::wcerr << "ERROR " << file_context->file_name.buffer_address << ":" << file_context->line_number << " " << message->buffer_address << std::endl;
-}
+//
+//void funcLogHook(struct CObject *a1, struct CScriptStackFrame *a2, void *a3) {
+//  OutputDebugStringW(L"test log");
+//}
+//
+//uint64_t* GetFunctionAddress(CFunction* function) {
+//  return (uint64_t*)((uint64_t)native_globals_function_map + (8 * function->registration_offset));
+//}
+//
+//void ReplaceFunction(const char* name, uint64_t address) {
+//  auto function = rtti_system->FindGlobalFunction(CName(name));
+//
+//  if (function) {
+//    auto function_address = GetFunctionAddress(function);
+//
+//    std::wstringstream message;
+//    message << "ReplaceFunction: " << name << " " << std::hex << function << " " << " " << std::hex << function_address;
+//    OutputDebugStringW(message.str().c_str());
+//
+//    *function_address = address;
+//  }
+//}
+//
+//static void ScriptWarn(void* thisptr, CScriptFileContext* file_context, TString* message) {
+//  std::wofstream log_file;
+//  log_file.open("script_compilation.log", std::ios_base::app);
+//  log_file << "warn " << file_context->file_name.buffer_address << ":" << file_context->line_number << " " << message->buffer_address << std::endl;
+//  log_file.close();
+//
+//  std::wcout << "warn " << file_context->file_name.buffer_address << ":" << file_context->line_number << " " << message->buffer_address << std::endl;
+//}
+//
+//static void ScriptError(void* thisptr, CScriptFileContext* file_context, TString* message) {
+//  std::wofstream log_file;
+//  log_file.open("script_compilation.log", std::ios_base::app);
+//  log_file << "ERROR " << file_context->file_name.buffer_address << ":" << file_context->line_number << " " << message->buffer_address << std::endl;
+//  log_file.close();
+//
+//  std::wcerr << "ERROR " << file_context->file_name.buffer_address << ":" << file_context->line_number << " " << message->buffer_address << std::endl;
+//}
 
 std::wstring GetExecutablePath() {
   wchar_t buffer[MAX_PATH];
@@ -277,38 +285,8 @@ DWORD WINAPI InitializeHook(void* arguments) {
   hook::set_base();
   HookFunction::RunAll();
 
-  std::wstring command_line = GetCommandLineW();
-
-  if (command_line.find(L"-dumpscripts") != std::string::npos) {
-    FILE *conout;
-    AllocConsole();
-    freopen_s(&conout, "conout$", "w", stdout);
-    freopen_s(&conout, "conout$", "w", stderr);
-
-    std::wofstream log_file;
-    log_file.open("script_compilation.log");
-    log_file.close();
-
-    //uint64_t hook = (uint64_t)hook::pattern("E8 ? ? ? ? 84 C0 75 14 48 8D 15 ? ? ? ? 48 8B CB 48 83 C4 30 5B").count(14).get(7).get<char>(0);
-    //OrginalBaseEngine_InitializeScripts = (decltype(OrginalBaseEngine_InitializeScripts))hook::get_call(hook);
-    //hook::call(hook, BaseEngine_InitializeScripts);
-
-    void* compilation_messages = hook::pattern("48 8D 35 ? ? ? ? 48 8D 54 24").count(1).get(0).extract<void*>(3);
-
-    //location_compilation = hook::pattern("83 3D ? ? ? ? ? 74 77 E8").count(1).get(0).get<char>(2);
-    //uint32_t* yydebug = reinterpret_cast<uint32_t*>(location_compilation + *(int32_t*)location_compilation + 5);
-    //*yydebug = 1;
-
-    DWORD old_protect;
-
-    if (VirtualProtect((void*)((uint64_t)compilation_messages + 2 * 8), 16, PAGE_EXECUTE_READWRITE, &old_protect)) {
-      *(uint64_t*)((uint64_t)compilation_messages + 2 * 8) = (uint64_t)&ScriptWarn;
-      *(uint64_t*)((uint64_t)compilation_messages + 3 * 8) = (uint64_t)&ScriptError;
-    }
-  }
-
   global_game = hook::pattern("48 8B 05 ? ? ? ? 48 8D 4C 24 ? C6 44 24").count(1).get(0).extract<CGame**>(3);
-  global_debug_console = hook::pattern("48 89 05 ? ? ? ? EB 07 48 89 35 ? ? ? ? 48 8B 47 60").count(1).get(0).extract<void**>(3);
+  global_debug_console = hook::pattern("48 89 05 ? ? ? ? EB 07 48 89 35 ? ? ? ? 48 8B 97").count(1).get(0).extract<void**>(3);
 
   while (*global_game == nullptr || *global_debug_console == nullptr) {
     Sleep(500);
@@ -320,24 +298,24 @@ DWORD WINAPI InitializeHook(void* arguments) {
   //FileManager* file_manager  = hook::pattern("48 8B 0D ? ? ? ? 48 8D 55 A0 41 B8").count(1).get(0).extract<FileManager*>(3);
 
   game_hook = new utils::VtableHook(*global_game);
-  game_hook->HookMethod(OnViewportInputDebugAlwaysHook, 129);
+  game_hook->HookMethod(OnViewportInputDebugAlwaysHook, 133);
 
-  auto exe_path = GetExecutablePath();
-  exe_path += L"\\scriptplugins\\";
+  //auto exe_path = GetExecutablePath();
+  //exe_path += L"\\scriptplugins\\";
 
-  auto plugin_names = GetAllFileNamesFromFolder(exe_path);
+  //auto plugin_names = GetAllFileNamesFromFolder(exe_path);
 
-  for (auto name : plugin_names) {
-    if (name.find(L".redscriptsplugin") == std::string::npos) continue;
+  //for (auto name : plugin_names) {
+  //  if (name.find(L".redscriptsplugin") == std::string::npos) continue;
 
-    auto full_path = (L"..\\..\\bin\\x64\\scriptplugins\\" + name);
-    CRTTISerializer serializer;
-    TString path(full_path.c_str());
+  //  auto full_path = (L"..\\..\\bin\\x64\\scriptplugins\\" + name);
+  //  CRTTISerializer serializer;
+  //  TString path(full_path.c_str());
 
-    if (serializer.LoadScriptData(&path, false)) {
-      OutputDebugStringW((L"Loaded scriptplugin: " + name).c_str());
-    };
-  }
+  //  if (serializer.LoadScriptData(&path, false)) {
+  //    OutputDebugStringW((L"Loaded scriptplugin: " + name).c_str());
+  //  };
+  //}
 
   //DumpGlobalFunctions();
 
@@ -352,11 +330,6 @@ DWORD WINAPI InitializeHook(void* arguments) {
 }
 
 void FinalizeHook() {
-  std::wstring command_line = GetCommandLineW();
-
-  if (command_line.find(L"-dumpscripts") != std::string::npos) {
-    system("pause");
-  }
   if (game_hook) delete game_hook;
 }
 
